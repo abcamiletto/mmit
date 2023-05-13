@@ -51,6 +51,6 @@ class TimmEncoder(BaseEncoder):
 
     @property
     def out_reductions(self):
-        feature_strides = self.model.feature_info.strides()
+        feature_strides = self.model.feature_info.reduction()
         in_stride = 1
         return [in_stride] + feature_strides
