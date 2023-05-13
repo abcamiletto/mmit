@@ -28,8 +28,9 @@ class UNetDecoder(nn.Module):
 
         specs = norm_layer, activation, extra_layer
         blocks = []
-        for ic, sc, oc, uplay in zip(in_ch, skip_ch, out_ch, up_lays):
-            upblock = UpBlock(ic, sc, oc, uplay, *specs)
+
+        for ic, sc, oc, up_lay in zip(in_ch, skip_ch, out_ch, up_lays):
+            upblock = UpBlock(ic, sc, oc, up_lay, *specs)
             blocks.append(upblock)
 
         self.blocks = nn.ModuleList(blocks)
@@ -67,22 +68,16 @@ class UNetDecoder(nn.Module):
         return in_channels, skip_channels, decoder_channels
 
     def format_upsample_layers(self, input_reductions, upsample_layer):
-        # We drop the first reduction since we don't use the input image
-        input_reductions = input_reductions[1:]
-
         # We reverse the input reductions since we're going from the bottom up
         input_reductions = input_reductions[::-1]
 
         # We build a mask to filter out the layers that don't need upsampling
-        upsample_mask = []
+        upsample_layers = []
         for i in range(1, len(input_reductions)):
             reduction = input_reductions[i]
             prev_reduction = input_reductions[i - 1]
-            upsample_mask.append(reduction > prev_reduction)
 
-        upsample_layers = []
-        for boolean in upsample_mask:
-            layer = upsample_layer if boolean else up.Identity
+            layer = upsample_layer if reduction < prev_reduction else up.Identity
             upsample_layers.append(layer)
 
         return upsample_layers
