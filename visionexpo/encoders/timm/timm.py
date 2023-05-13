@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import timm
 
-from ..base import BaseEncoder
+from ..basencoder import BaseEncoder
 
 
 class TimmEncoder(BaseEncoder):
