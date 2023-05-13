@@ -15,7 +15,7 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture, pre-commit"]
+dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
 docs = ["sphinx",
         "sphinx-autobuild",
         "sphinx-rtd-theme",
@@ -28,4 +28,4 @@ docs = ["sphinx",
 write_to = "visionexpo/_version.py"
 
 [tool.setuptools.packages.find]
-where = ["visionexpo"]  
+where = ["./visionexpo"]  
