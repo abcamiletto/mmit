@@ -15,7 +15,7 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture"]
+dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture, pre-commit"]
 docs = ["sphinx",
         "sphinx-autobuild",
         "sphinx-rtd-theme",

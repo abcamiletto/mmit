@@ -154,3 +154,6 @@ cython_debug/
 
 # Setuptools scm
 _version.py
+
+# Development folder
+devel/
