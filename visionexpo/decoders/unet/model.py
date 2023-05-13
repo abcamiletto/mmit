@@ -28,8 +28,8 @@ class UNetDecoder(nn.Module):
 
         specs = norm_layer, activation, extra_layer
         blocks = []
-        for ic, sc, oc in zip(in_ch, skip_ch, out_ch):
-            upblock = UpBlock(ic, sc, oc, up_lays, *specs)
+        for ic, sc, oc, uplay in zip(in_ch, skip_ch, out_ch, up_lays):
+            upblock = UpBlock(ic, sc, oc, uplay, *specs)
             blocks.append(upblock)
 
         self.blocks = nn.ModuleList(blocks)
@@ -82,7 +82,7 @@ class UNetDecoder(nn.Module):
 
         upsample_layers = []
         for boolean in upsample_mask:
-            layer = upsample_layer if boolean else up.Identity()
+            layer = upsample_layer if boolean else up.Identity
             upsample_layers.append(layer)
 
         return upsample_layers
