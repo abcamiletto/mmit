@@ -27,5 +27,5 @@ docs = ["sphinx",
 [tool.setuptools_scm]
 write_to = "visionexpo/_version.py"
 
-[tool.setuptools]
-packages = ["visionexpo"]
+[tool.setuptools.packages.find]
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
