@@ -19,12 +19,14 @@ class TimmEncoder(BaseEncoder):
     ):
         super().__init__()
 
-        layers = layers if isinstance(layers, tuple) else tuple(range(layers))
+        if isinstance(layers, (int, float)):
+            layers = tuple(range(layers))
+
         model_kwargs = {
             "pretrained": pretrained,
             "in_chans": in_channels,
             "features_only": True,
-            "out_indices": tuple(range(layers)),
+            "out_indices": layers,
         }
 
         if output_stride != 32:
@@ -48,7 +50,7 @@ class TimmEncoder(BaseEncoder):
         return [in_channels] + feature_channels
 
     @property
-    def out_strides(self):
+    def out_reductions(self):
         feature_strides = self.model.feature_info.strides()
         in_stride = 1
         return [in_stride] + feature_strides
