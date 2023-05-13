@@ -28,4 +28,4 @@ docs = ["sphinx",
 write_to = "visionexpo/_version.py"
 
 [tool.setuptools.packages.find]
-where = ["./visionexpo"]  
+where = ["./visionexpo"]

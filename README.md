@@ -1,6 +1,6 @@
 # Vision Expo Pytorch
 
-**Vision Expo (VE) is a python library with pretrained building blocks for Computer Vision models.**  
+**Vision Expo (VE) is a python library with pretrained building blocks for Computer Vision models.**
 
 ## Why VE?
 
