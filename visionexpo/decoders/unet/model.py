@@ -7,7 +7,7 @@ from .parts import UpBlock
 DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
 
 
-class UNetDecoder(nn.Module):
+class UNet(nn.Module):
     def __init__(
         self,
         input_channels: list[int],
