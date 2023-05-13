@@ -7,6 +7,7 @@ class UpBlock(nn.Module):
     def __init__(
         self,
         in_channels: int,
+        skip_channels: int,
         out_channels: int,
         norm_layer: nn.Module = nn.BatchNorm2d,
         activation: nn.Module = nn.ReLU(inplace=True),
@@ -14,12 +15,17 @@ class UpBlock(nn.Module):
     ):
         super().__init__()
         self.up = nn.ConvTranspose2d(in_channels, in_channels, kernel_size=2, stride=2)
-        self.conv = DoubleConvBlock(in_channels, out_channels, norm_layer, activation)
+
+        conv_channels = in_channels + skip_channels
+        self.conv = DoubleConvBlock(conv_channels, out_channels, norm_layer, activation)
         self.extra_layer = extra_layer
 
-    def forward(self, x, skip):
+    def forward(self, x, skip=None):
         x = self.up(x)
-        x = self.concatenate(x, skip)
+
+        if skip is not None:
+            x = self.concatenate(x, skip)
+
         x = self.extra_layer(x)
         x = self.conv(x)
         return x

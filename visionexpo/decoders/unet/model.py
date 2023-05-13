@@ -3,6 +3,8 @@ from torch import nn
 
 from .parts import UpBlock
 
+DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
+
 
 class UNetDecoder(nn.Module):
     def __init__(
@@ -15,31 +17,42 @@ class UNetDecoder(nn.Module):
     ):
         super().__init__()
 
-        in_ch, out_ch = self.get_in_out_channels(input_channels, decoder_channels)
+        if decoder_channels is None:
+            decoder_channels = DEFAULT_CHANNELS[: len(input_channels) - 1]
+
+        in_ch, skip_ch, out_ch = self.format_channels(input_channels, decoder_channels)
 
         blocks = []
-        for ic, oc in zip(in_ch, out_ch):
-            upblock = UpBlock(ic, oc, norm_layer, activation, extra_layer)
+        for ic, sc, oc in zip(in_ch, skip_ch, out_ch):
+            upblock = UpBlock(ic, sc, oc, norm_layer, activation, extra_layer)
             blocks.append(upblock)
 
         self.blocks = nn.ModuleList(blocks)
 
-    def forward(self, x, skip):
-        x = self.up(x)
-        x = torch.cat([x, skip], dim=1)
-        x = self.conv(x)
+    def forward(self, *features: torch.Tensor) -> torch.Tensor:
+        # Dropping the first channel since we don't use the input image
+        features = features[1:]
+
+        # Reversing the input channels since we're going from the bottom up
+        features = features[::-1]
+
+        skips = features[1:]
+        x = features[0]
+
+        for i, decoder_block in enumerate(self.blocks):
+            skip = skips[i] if i < len(skips) else None
+            x = decoder_block(x, skip)
+
         return x
 
-    def get_in_out_channels(self, input_channels, decoder_channels):
+    def format_channels(self, input_channels, decoder_channels):
         # We drop the first channel since we don't use the input image
         input_channels = input_channels[1:]
 
         # We reverse the input channels since we're going from the bottom up
         input_channels = input_channels[::-1]
 
+        # On the last layer we don't have a skip connection
         skip_channels = input_channels[1:] + [0]
 
-        in_ch = [ic + sc for ic, sc in zip(input_channels, skip_channels)]
-        out_ch = decoder_channels
-
-        return in_ch, out_ch
+        return input_channels, skip_channels, decoder_channels
