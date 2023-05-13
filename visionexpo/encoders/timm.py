@@ -6,22 +6,25 @@ from ..base import BaseEncoder
 
 
 class TimmEncoder(BaseEncoder):
+    """Wrapper for timm encoders. Inspired by segmentation_models_pytorch."""
+
     def __init__(
         self,
         name: str,
         pretrained: bool = True,
         in_channels: int = 3,
-        depth: int = 5,
+        layers: int | tuple = 5,
         output_stride: int = 32,
         weights: str = None,
     ):
         super().__init__()
 
+        layers = layers if isinstance(layers, tuple) else tuple(range(layers))
         model_kwargs = {
             "pretrained": pretrained,
             "in_chans": in_channels,
             "features_only": True,
-            "out_indices": tuple(range(depth)),
+            "out_indices": tuple(range(layers)),
         }
 
         if output_stride != 32:
