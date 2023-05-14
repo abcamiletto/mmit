@@ -23,7 +23,7 @@ class UNetPlusPlus(BaseDecoder):
         if decoder_channels is None:
             decoder_channels = DEFAULT_CHANNELS[: len(input_channels) - 1]
 
-        in_ch, skip_ch, out_ch = self.format_channels(input_channels, decoder_channels)
+        in_ch, skip_ch, out_ch = self._format_channels(input_channels, decoder_channels)
         self.in_channels = in_ch
         self.skip_channels = skip_ch
         self.out_channels = out_ch
@@ -115,7 +115,7 @@ class UNetPlusPlus(BaseDecoder):
         final_block = self.blocks[f"x_{0}_{self.depth}"]
         return final_block(final_input)
 
-    def format_channels(self, input_channels, decoder_channels):
+    def _format_channels(self, input_channels, decoder_channels):
         # We drop the first channel since we don't use the input image
         input_channels = input_channels[1:]
 

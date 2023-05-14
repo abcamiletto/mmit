@@ -24,8 +24,8 @@ class UNet(BaseDecoder):
         if decoder_channels is None:
             decoder_channels = DEFAULT_CHANNELS[: len(input_channels) - 1]
 
-        in_ch, skip_ch, out_ch = self.format_channels(input_channels, decoder_channels)
-        up_lays = self.format_upsample_layers(input_reductions, upsample_layer)
+        in_ch, skip_ch, out_ch = self._format_channels(input_channels, decoder_channels)
+        up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
 
         specs = norm_layer, activation, extra_layer
         blocks = []
@@ -53,7 +53,7 @@ class UNet(BaseDecoder):
 
         return x
 
-    def format_channels(self, input_channels, decoder_channels):
+    def _format_channels(self, input_channels, decoder_channels):
         # We drop the first channel since we don't use the input image
         input_channels = input_channels[1:]
 
@@ -69,7 +69,7 @@ class UNet(BaseDecoder):
 
         return in_channels, skip_channels, decoder_channels
 
-    def format_upsample_layers(self, input_reductions, upsample_layer):
+    def _format_upsample_layers(self, input_reductions, upsample_layer):
         # We reverse the input reductions since we're going from the bottom up
         input_reductions = input_reductions[::-1]
 
