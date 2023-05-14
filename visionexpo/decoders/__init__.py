@@ -12,5 +12,7 @@ def create_decoder(name, *args, **kwargs):
     name = name.lower()
     if name == "unet":
         return UNet(*args, **kwargs)
+    elif name == "unetplusplus":
+        return UNetPlusPlus(*args, **kwargs)
     else:
         raise ValueError(f"Unknown decoder {name}.")

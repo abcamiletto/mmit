@@ -2,12 +2,13 @@ import torch
 from torch import nn
 
 from ...base import upsamplers as up
+from ..basedecoder import BaseDecoder, size_control
 from .parts import UpBlock
 
 DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
 
 
-class UNet(nn.Module):
+class UNet(BaseDecoder):
     def __init__(
         self,
         input_channels: list[int],
@@ -35,6 +36,7 @@ class UNet(nn.Module):
 
         self.blocks = nn.ModuleList(blocks)
 
+    @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
         # Dropping the first channel since we don't use the input image
         features = features[1:]

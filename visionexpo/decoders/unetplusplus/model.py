@@ -2,12 +2,13 @@ import torch
 import torch.nn as nn
 
 from ...base import upsamplers as up
+from ..basedecoder import BaseDecoder, size_control
 from ..unet.parts import UpBlock
 
 DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
 
 
-class UNetPlusPlus(nn.Module):
+class UNetPlusPlus(BaseDecoder):
     def __init__(
         self,
         input_channels: list[int],
@@ -47,6 +48,7 @@ class UNetPlusPlus(nn.Module):
         self.blocks = nn.ModuleDict(blocks)
         self.depth = len(in_ch) - 1
 
+    @size_control
     def forward(self, *features):
         features = self._preprocess_features(features)
         intermediate_outputs = self._generate_intermediate_outputs(features)
