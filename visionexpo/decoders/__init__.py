@@ -1,6 +1,7 @@
 from .unet.model import UNet
+from .unetplusplus.model import UNetPlusPlus
 
-__all__ = ["UNet"]
+__all__ = ["UNet", "UNetPlusPlus"]
 
 
 def list_decoders():
