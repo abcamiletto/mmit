@@ -29,3 +29,6 @@ write_to = "visionexpo/_version.py"
 
 [tool.setuptools.packages.find]
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.ruff]
+line-length = 120
