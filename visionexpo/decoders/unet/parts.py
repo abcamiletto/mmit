@@ -36,8 +36,10 @@ class UpBlock(nn.Module):
         return x
 
     def concatenate(self, x, skip):
-        if x.shape[2:] != skip.shape[2:]:
-            x = F.interpolate(x, size=skip.shape[2:], mode="bilinear")
+        x_size, skip_size = x.shape[2:], skip.shape[2:]
+
+        if x_size != skip_size:
+            x = F.interpolate(x, size=skip_size, mode="bilinear")
 
         return torch.cat([x, skip], dim=1)
 
