@@ -1,3 +1,6 @@
+from functools import partial
+from typing import List, Optional, Type
+
 import torch
 from torch import nn
 
@@ -11,13 +14,13 @@ DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
 class UNet(BaseDecoder):
     def __init__(
         self,
-        input_channels: list[int],
-        input_reductions: list[int],
-        decoder_channels: list[int] = None,
-        upsample_layer: nn.Module = up.ConvTranspose2d,
-        norm_layer: nn.Module = nn.BatchNorm2d,
-        activation: nn.Module = nn.ReLU(inplace=True),
-        extra_layer: nn.Module = nn.Identity(),
+        input_channels: List[int],
+        input_reductions: List[int],
+        decoder_channels: Optional[List[int]] = None,
+        upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
+        norm_layer: Type[nn.Module] = nn.BatchNorm2d,
+        activation: Type[nn.Module] = nn.ReLU,
+        extra_layer: Type[nn.Module] = nn.Identity,
     ):
         super().__init__()
 
@@ -76,10 +79,10 @@ class UNet(BaseDecoder):
         # We build a mask to filter out the layers that don't need upsampling
         upsample_layers = []
         for i in range(1, len(input_reductions)):
-            reduction = input_reductions[i]
-            prev_reduction = input_reductions[i - 1]
+            scale = input_reductions[i - 1] // input_reductions[i]
 
-            layer = upsample_layer if reduction < prev_reduction else up.Identity
+            # Partially initialize the upsample layer with the scale
+            layer = partial(upsample_layer, scale=scale)
             upsample_layers.append(layer)
 
         return upsample_layers
