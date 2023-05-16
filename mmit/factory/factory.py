@@ -7,15 +7,27 @@ from .registry import get_decoder, get_encoder
 __all__ = ["create_encoder", "create_decoder"]
 
 
-def create_encoder(name: str, **kwargs) -> nn.Module:
-    """Create an encoder from a name and kwargs."""
-    encoder = get_encoder(name)
-    return encoder(**kwargs)
+class Factory:
+    out_channels: List[int]
+    out_reductions: List[int]
+
+    @classmethod
+    def create_encoder(cls, name: str, **kwargs) -> nn.Module:
+        """Create an encoder from a name and kwargs."""
+        Encoder = get_encoder(name)
+        encoder = Encoder(**kwargs)
+        cls.out_channels = encoder.out_channels
+        cls.out_reductions = encoder.out_reductions
+        return encoder
+
+    @classmethod
+    def create_decoder(cls, name: str, **kwargs) -> nn.Module:
+        """Create a decoder from a name and kwargs."""
+        Decoder = get_decoder(name)
+        out_channels = kwargs.pop("out_channels", cls.out_channels)
+        out_reductions = kwargs.pop("out_reductions", cls.out_reductions)
+        return Decoder(out_channels, out_reductions)
 
 
-def create_decoder(
-    name: str, out_channels: List[int], out_reductions: List[int]
-) -> nn.Module:
-    """Create a decoder from a name and kwargs."""
-    decoder = get_decoder(name)
-    return decoder(out_channels, out_reductions)
+create_encoder = Factory.create_encoder
+create_decoder = Factory.create_decoder
