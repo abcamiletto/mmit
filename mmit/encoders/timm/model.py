@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import timm
 
+from mmit.factory import register
+
 from ..basencoder import BaseEncoder
 
 __all__ = ["TimmEncoder"]
 
 
+@register
 class TimmEncoder(BaseEncoder):
     """Wrapper for timm encoders. Inspired by segmentation_models_pytorch."""
 

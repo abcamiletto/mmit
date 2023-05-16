@@ -1,6 +1,8 @@
 import inspect
+from functools import partial
 from typing import Dict, List, Type
 
+import timm
 import torch.nn as nn
 
 __all__ = [
@@ -46,8 +48,14 @@ class Registry:
 
     @classmethod
     def get_encoder(cls, name: str) -> Type[nn.Module]:
+        # If the name is a timm model, return a partially initialized timm encoder
+        if name in timm.list_models():
+            encoder = cls._encoders["timmencoder"]
+            return partial(encoder, name=name)
+
         if name not in cls._encoders:
             raise KeyError(f"Encoder {name} is not registered")
+
         return cls._encoders[name]
 
 

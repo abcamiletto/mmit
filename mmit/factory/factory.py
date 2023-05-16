@@ -2,15 +2,15 @@ from typing import List
 
 import torch.nn as nn
 
-from ..encoders import TimmEncoder
-from .registry import get_decoder
+from .registry import get_decoder, get_encoder
 
 __all__ = ["create_encoder", "create_decoder"]
 
 
 def create_encoder(name: str, **kwargs) -> nn.Module:
     """Create an encoder from a name and kwargs."""
-    return TimmEncoder(name, **kwargs)
+    encoder = get_encoder(name)
+    return encoder(**kwargs)
 
 
 def create_decoder(
