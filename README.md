@@ -1,22 +1,49 @@
 # Multi-Models for Images in pyTorch (MMIT)
 
 <div align="center">
-  
+
  **mmit** is a python library with pretrained building blocks for Computer Vision models.
 
 [![License badge](https://img.shields.io/github/license/abcamiletto/mmit?style=for-the-badge)](https://github.com/abcamiletto/mmit/blob/master/LICENSE)
-[![PyTorch - Version](https://img.shields.io/badge/PYTORCH-1.10+-red?style=for-the-badge&logo=pytorch)](https://pepy.tech/project/segmentation-models-pytorch) 
-[![Python - Version](https://img.shields.io/badge/PYTHON-3.8+-red?style=for-the-badge&logo=python&logoColor=white)](https://pepy.tech/project/segmentation-models-pytorch) 
+![PyTorch - Version](https://img.shields.io/badge/PYTORCH-1.10+-red?style=for-the-badge&logo=pytorch)
+![Python - Version](https://img.shields.io/badge/PYTHON-3.8+-red?style=for-the-badge&logo=python&logoColor=white)
 
 </div>
 
-## Why mmit?
+## Main Features
 
-mmit is a library that provides building blocks for Computer Vision models. Heavily inspired by [SMP](https://github.com/qubvel/segmentation_models.pytorch), we aim at providing a unified interface for all encoder and decoders, so that any composition is plug and play.
-It is designed to be flexible in order to support rapid implementation and evaluation of novel research. It is also designed to be fast, modular, and extensible. mmit is built on top of PyTorch.
+**mmit** is engineered with the objective of streamlining the construction of Computer Vision models. It offers a consistent interface for all encoders and decoders, thus enabling effortless integration of any desired combination.
 
+In terms of encoders, mmit is compatible with all encoders from [timm](https://github.com/huggingface/pytorch-image-models) utilizing a standardized API. However, it is noteworthy that timm does not accommodate feature extraction for transformer encoders. To resolve this, we have adopted a principled stance and introduced support for a select number of these encoders.
 
-  
+Regarding decoders, mmit currently facilitates UNet and UNet++ decoders, again employing a unified API. Our roadmap includes plans for incorporating additional decoders in the future.
+
+One of the distinctive features of mmit is its ability to automatically construct the decoder to correspond with the output shape of any given encoder. This ensures seamless compatibility and interoperability, enhancing the user experience and the efficiency of model building.
+
+## Installation
+
+We can simply install mmit using pip:
+
+```bash
+pip install mmit
+```
+
+## Quick Start
+
+Let's look at a super simple example of how to use mmit:
+
+```python
+import torch
+import mmit
+
+encoder = mmit.create_encoder('resnet18')
+decoder = mmit.create_decoder('unetplusplus') # automatically matches encoder output shape!
+
+x = torch.randn(2, 3, 256, 256)
+features = encoder(x)
+out = decoder(*features)
+```
+
 ## To Do List
 
 In the future, we plan to add support for:
@@ -26,6 +53,7 @@ In the future, we plan to add support for:
 - [ ] torchvision / torchub models
 - [x] UNet and UNet++ decoders
 - [ ] other decoders
+- [ ] API for building end-to-end models
 - [ ] multiple heads
 - [ ] popular loss function
 - [ ] popular datasets
