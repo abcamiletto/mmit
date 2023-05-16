@@ -32,3 +32,6 @@ namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
 [tool.ruff]
 line-length = 120
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
