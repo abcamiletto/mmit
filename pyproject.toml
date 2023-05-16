@@ -4,15 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmit"
-dynamic = ["version"]
 description = "A Python package for computer vision experiments and research."
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/abcamiletto/mmit"
+repository = "https://github.com/abcamiletto/mmit"
 authors = [{ name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" }]
 dependencies = [
     "timm>=0.9.0",
     "torch>=1.9"
 ]
 requires-python = ">=3.9"
+version = "0.0.1b"
 
 [project.optional-dependencies]
 dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
@@ -24,9 +27,6 @@ docs = ["sphinx",
         "sphinx_copybutton"
 ]
 
-[tool.setuptools_scm]
-version = "true"
-
 [tool.setuptools.packages.find]
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
@@ -34,4 +34,4 @@ namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 line-length = 120
 
 [tool.ruff.per-file-ignores]
-"__init__.py" = ["E402", "F401", "F403"]
+"__init__.py" = ["E402", "F401", "F403"] # exclude imports from __init__.py
