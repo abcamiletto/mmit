@@ -6,16 +6,17 @@ build-backend = "setuptools.build_meta"
 name = "mmit"
 description = "A Python package for computer vision experiments and research."
 readme = "README.md"
-license = "MIT"
-homepage = "https://github.com/abcamiletto/mmit"
-repository = "https://github.com/abcamiletto/mmit"
 authors = [{ name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" }]
 dependencies = [
     "timm>=0.9.0",
     "torch>=1.9"
 ]
 requires-python = ">=3.9"
-version = "0.0.1b"
+version = "0.0.3"
+
+[project.urls]
+Homepage = "https://github.com/abcamiletto/mmit"
+Repository = "https://github.com/abcamiletto/mmit"
 
 [project.optional-dependencies]
 dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
