@@ -12,7 +12,7 @@ def test_timm_encoder_decoder(encoder_name, decoder_name):
     encoder = mmit.encoders.TimmEncoder(encoder_name, pretrained=False)
     out_ch, out_red = encoder.out_channels, encoder.out_reductions
 
-    decoder = mmit.decoders.create_decoder(decoder_name, out_ch, out_red)
+    decoder = mmit.create_decoder(decoder_name, out_ch, out_red)
 
     x = torch.randn(2, 3, 256, 256)
     with torch.no_grad():
@@ -32,7 +32,7 @@ def test_timm_encoder_decoder_awful_shape(encoder_name, decoder_name, input_shap
     encoder = mmit.encoders.TimmEncoder(encoder_name, pretrained=False)
     out_ch, out_red = encoder.out_channels, encoder.out_reductions
 
-    decoder = mmit.decoders.create_decoder(decoder_name, out_ch, out_red)
+    decoder = mmit.create_decoder(decoder_name, out_ch, out_red)
 
     x = torch.randn(2, 3, *input_shape)
     with torch.no_grad():
@@ -53,7 +53,7 @@ def test_timm_encoder_layers_stride_decoder(encoder_name, decoder_name):
     )
     out_ch, out_red = encoder.out_channels, encoder.out_reductions
 
-    decoder = mmit.decoders.create_decoder(decoder_name, out_ch, out_red)
+    decoder = mmit.create_decoder(decoder_name, out_ch, out_red)
 
     x = torch.randn(2, 3, 256, 256)
     with torch.no_grad():

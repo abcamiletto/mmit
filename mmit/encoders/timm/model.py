@@ -4,6 +4,8 @@ import timm
 
 from ..basencoder import BaseEncoder
 
+__all__ = ["TimmEncoder"]
+
 
 class TimmEncoder(BaseEncoder):
     """Wrapper for timm encoders. Inspired by segmentation_models_pytorch."""

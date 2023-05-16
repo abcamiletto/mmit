@@ -4,13 +4,18 @@ from typing import Type
 import torch
 import torch.nn as nn
 
-from ...base import upsamplers as up
+from mmit.base import upsamplers as up
+from mmit.factory import register
+
 from ..basedecoder import BaseDecoder, size_control
 from ..unet.parts import UpBlock
+
+__all__ = ["UNetPlusPlus"]
 
 DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
 
 
+@register
 class UNetPlusPlus(BaseDecoder):
     """UNet++ decoder implementation from https://arxiv.org/abs/1807.10165.
 
