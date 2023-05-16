@@ -26,6 +26,7 @@ docs = ["sphinx",
 
 [tool.setuptools_scm]
 write_to = "mmit/_version.py"
+version = "true"
 
 [tool.setuptools.packages.find]
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
