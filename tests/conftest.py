@@ -1,4 +1,4 @@
-import visionexpo as ve
+import mmit
 
 TIMM_ENCODERS = ["resnet18", "tf_efficientnet_b0", "resnext26ts", "skresnet18"]
-DECODERS = ve.decoders.list_decoders()
+DECODERS = mmit.decoders.list_decoders()
