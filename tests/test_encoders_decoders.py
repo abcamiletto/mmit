@@ -15,8 +15,6 @@ def test_timm_encoder_decoder(encoder_name, decoder_name):
     x = torch.randn(2, 3, 256, 256)
     with torch.no_grad():
         features = encoder(x)
-        for f in features:
-            print(f.shape)
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
@@ -33,8 +31,6 @@ def test_timm_encoder_decoder_awful_shape(encoder_name, decoder_name, input_shap
     x = torch.randn(2, 3, *input_shape)
     with torch.no_grad():
         features = encoder(x)
-        for f in features:
-            print(f.shape)
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
@@ -52,8 +48,6 @@ def test_timm_encoder_layers_stride_decoder(encoder_name, decoder_name):
     x = torch.randn(2, 3, 256, 256)
     with torch.no_grad():
         features = encoder(x)
-        for f in features:
-            print(f.shape)
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
