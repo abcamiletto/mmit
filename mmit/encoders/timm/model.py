@@ -17,28 +17,29 @@ class TimmEncoder(BaseEncoder):
         self,
         name: str,
         pretrained: bool = True,
-        in_channels: int = 3,
-        layers: int | tuple = 5,
+        in_chans: int = 3,
+        out_indices: int | tuple = 5,
         output_stride: int = 32,
-        weights: str = None,
+        **kwargs,
     ):
         super().__init__()
 
-        if isinstance(layers, (int, float)):
-            layers = tuple(range(layers))
+        if isinstance(out_indices, (int, float)):
+            out_indices = tuple(range(out_indices))
 
         model_kwargs = {
             "pretrained": pretrained,
-            "in_chans": in_channels,
+            "in_chans": in_chans,
             "features_only": True,
-            "out_indices": layers,
+            "out_indices": out_indices,
         }
+        model_kwargs.update(kwargs)
 
         if output_stride != 32:
             model_kwargs["output_stride"] = output_stride
 
         self.model = timm.create_model(name, **model_kwargs)
-        self.in_channels = in_channels
+        self.in_channels = in_chans
 
     def forward(self, x):
         features = self.model(x)
