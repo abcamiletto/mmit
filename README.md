@@ -20,6 +20,12 @@ Regarding decoders, mmit currently facilitates UNet and UNet++ decoders, again e
 
 One of the distinctive features of mmit is its ability to automatically construct the decoder to correspond with the output shape of any given encoder. This ensures seamless compatibility and interoperability, enhancing the user experience and the efficiency of model building.
 
+Wrapping up, our main features are:
+
+- Feature Extraction with Transformer Backbones
+- Modular decoders that works with any encoders
+- Pretrained encoder+decoders modules
+
 ## Installation
 
 We can simply install mmit using pip:
