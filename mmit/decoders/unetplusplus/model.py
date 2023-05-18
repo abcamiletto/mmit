@@ -7,8 +7,9 @@ import torch.nn as nn
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
-from ..basedecoder import BaseDecoder, size_control
+from ..basedecoder import BaseDecoder
 from ..unet.parts import UpBlock
+from ..utils import size_control
 
 __all__ = ["UNetPlusPlus"]
 
@@ -38,7 +39,7 @@ class UNetPlusPlus(BaseDecoder):
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
     ):
-        super().__init__()
+        super().__init__(input_channels, input_reductions)
         self.depth = len(input_channels)
         if decoder_channels is None:
             decoder_channels = DEFAULT_CHANNELS[: self.depth - 1]

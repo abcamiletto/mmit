@@ -4,6 +4,8 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
+from mmit.base import upsamplers as up
+
 
 class UpBlock(nn.Module):
     def __init__(
@@ -11,7 +13,7 @@ class UpBlock(nn.Module):
         in_channels: int,
         skip_channels: int,
         out_channels: int,
-        upsample_layer: Type[nn.Module] = nn.ConvTranspose2d,
+        upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
