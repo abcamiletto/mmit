@@ -1,9 +1,9 @@
 from typing import Type
 
 import torch.nn as nn
-import torch.nn.functional as F
 from torch import Tensor
 
+from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 
 
@@ -46,22 +46,19 @@ class SkipBlock(nn.Module):
         input_channels: int,
         skip_channels: int,
         upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
-        mismatch_fix_strategy: str = "interpolate",
+        mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__()
         self.up = upsample_layer(input_channels)
         self.skip_conv = nn.Conv2d(skip_channels, input_channels, kernel_size=1)
+        self.fix_mismatch = mismatch_layer()
 
     def forward(self, x, skip=None):
         x = self.up(x)
 
         if skip is not None:
-            x_size, skip_size = x.shape[2:], skip.shape[2:]
-
-            if x_size != skip_size:
-                x = F.interpolate(x, size=skip_size, mode="bilinear")
-
             skip = self.skip_conv(skip)
+            x, skip = self.fix_mismatch(x, skip)
             x = x + skip
 
         return x

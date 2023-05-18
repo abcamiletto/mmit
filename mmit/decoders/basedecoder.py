@@ -11,14 +11,12 @@ class BaseDecoder(nn.Module):
         self,
         input_channels: List[int],
         input_reductions: List[int],
-        mismatch_fix_strategy: str = "pad",
     ):
         super().__init__()
         self._validate_input(input_channels, input_reductions)
 
         self.input_channels = input_channels
         self.input_reductions = input_reductions
-        self.mismatch_handling_mode = mismatch_fix_strategy
 
     def forward(self, *features: Tensor) -> Union[Tensor, List[Tensor]]:
         """Forward pass of the decoder.
@@ -34,7 +32,6 @@ class BaseDecoder(nn.Module):
             f"{self.__class__.__name__}("
             f"input_channels={self.input_channels}, "
             f"input_reductions={self.input_reductions}, "
-            f"mismatch_handling_mode={self.mismatch_handling_mode}"
             f")"
         )
 

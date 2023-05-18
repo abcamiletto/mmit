@@ -1,13 +1,13 @@
 from typing import Type
 
 import torch
-import torch.nn.functional as F
 from torch import nn
 
+from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 
 
-class UpBlock(nn.Module):
+class UBlock(nn.Module):
     def __init__(
         self,
         in_channels: int,
@@ -17,6 +17,7 @@ class UpBlock(nn.Module):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__()
 
@@ -26,24 +27,18 @@ class UpBlock(nn.Module):
         self.conv = DoubleConvBlock(conv_channels, out_channels, norm_layer, activation)
 
         self.extra_layer = extra_layer()
+        self.fix_mismatch = mismatch_layer()
 
     def forward(self, x, skip=None):
         x = self.up(x)
 
         if skip is not None:
-            x = self.concatenate(x, skip)
+            x, skip = self.fix_mismatch(x, skip)
+            x = torch.cat([x, skip], dim=1)
 
         x = self.extra_layer(x)
         x = self.conv(x)
         return x
-
-    def concatenate(self, x, skip):
-        x_size, skip_size = x.shape[2:], skip.shape[2:]
-
-        if x_size != skip_size:
-            x = F.interpolate(x, size=skip_size, mode="bilinear")
-
-        return torch.cat([x, skip], dim=1)
 
 
 class DoubleConvBlock(nn.Module):

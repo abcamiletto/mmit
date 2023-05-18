@@ -4,12 +4,13 @@ from typing import List, Optional, Type
 import torch
 from torch import nn
 
+from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
 from ..utils.resize import size_control
-from .parts import UpBlock
+from .parts import UBlock
 
 __all__ = ["UNet"]
 
@@ -27,6 +28,7 @@ class UNet(BaseDecoder):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__(input_channels, input_reductions)
 
@@ -36,12 +38,12 @@ class UNet(BaseDecoder):
         in_ch, skip_ch, out_ch = self._format_channels(input_channels, decoder_channels)
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
 
-        specs = norm_layer, activation, extra_layer
+        specs = norm_layer, activation, extra_layer, mismatch_layer
         blocks = []
 
         for ic, sc, oc, up_lay in zip(in_ch, skip_ch, out_ch, up_lays):
-            upblock = UpBlock(ic, sc, oc, up_lay, *specs)
-            blocks.append(upblock)
+            ublock = UBlock(ic, sc, oc, up_lay, *specs)
+            blocks.append(ublock)
 
         self.blocks = nn.ModuleList(blocks)
 
