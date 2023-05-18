@@ -46,6 +46,7 @@ class FPN(BaseDecoder):
         self.skip_blocks = nn.ModuleList(skip_blocks)
 
         # Setting up the output blocks
+        specs = norm_layer, activation, extra_layer
         out_blocks = []
         for red in input_reductions[1:][::-1]:
             up_lay = partial(upsample_layer, scale=red)
