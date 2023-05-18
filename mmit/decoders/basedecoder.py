@@ -5,34 +5,20 @@ from typing import List, Union
 import torch.nn as nn
 from torch import Tensor
 
-from .utils import interpolate_to_match, pad_to_match
-
 
 class BaseDecoder(nn.Module):
     def __init__(
         self,
         input_channels: List[int],
         input_reductions: List[int],
-        mismatch_handling_mode: str = "pad",
+        mismatch_fix_strategy: str = "pad",
     ):
         super().__init__()
-        if len(input_channels) != len(input_reductions):
-            raise ValueError(
-                "The number of input channels and input reductions must match."
-            )
+        self._validate_input(input_channels, input_reductions)
 
         self.input_channels = input_channels
         self.input_reductions = input_reductions
-        self.mismatch_handling_mode = mismatch_handling_mode
-
-        if mismatch_handling_mode == "pad":
-            self.fix_size = pad_to_match
-        elif mismatch_handling_mode == "interpolate":
-            self.fix_size = interpolate_to_match
-        else:
-            raise ValueError(
-                f"Unknown mismatch handling mode: {mismatch_handling_mode}."
-            )
+        self.mismatch_handling_mode = mismatch_fix_strategy
 
     def forward(self, *features: Tensor) -> Union[Tensor, List[Tensor]]:
         """Forward pass of the decoder.
@@ -51,3 +37,16 @@ class BaseDecoder(nn.Module):
             f"mismatch_handling_mode={self.mismatch_handling_mode}"
             f")"
         )
+
+    def _validate_input(self, channels: List[int], reductions: List[int]):
+        if len(channels) != len(reductions):
+            raise ValueError(
+                "The number of input channels and input reductions must match."
+            )
+
+        # Check if reductions are powers of 2
+        for reduction in reductions:
+            if reduction < 1:
+                raise ValueError("The input reduction must be greater or equal to 1.")
+            elif reduction & (reduction - 1) != 0:
+                raise ValueError("The input reduction must be a power of 2.")
