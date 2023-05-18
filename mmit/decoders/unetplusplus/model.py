@@ -42,10 +42,10 @@ class UNetPlusPlus(BaseDecoder):
         mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__(input_channels, input_reductions)
+
         self.depth = len(input_channels)
         if decoder_channels is None:
             decoder_channels = DEFAULT_CHANNELS[: self.depth - 1]
-            print(f"Using default decoder channels: {decoder_channels}")
 
         channels = self._format_channels(input_channels, decoder_channels)
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)

@@ -38,8 +38,9 @@ class FPN(BaseDecoder):
         input_channels = input_channels[1:][::-1]
 
         # Setting up the skip blocks
+        skip_channels = input_channels[1:]
         skip_blocks = []
-        for skip_channel, up_lay in zip(input_channels[1:], up_lays):
+        for skip_channel, up_lay in zip(skip_channels, up_lays):
             block = SkipBlock(decoder_channel, skip_channel, up_lay)
             skip_blocks.append(block)
 
@@ -47,6 +48,7 @@ class FPN(BaseDecoder):
 
         # Setting up the output blocks
         specs = norm_layer, activation, extra_layer
+
         out_blocks = []
         for red in input_reductions[1:][::-1]:
             up_lay = partial(upsample_layer, scale=red)
