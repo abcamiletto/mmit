@@ -65,30 +65,33 @@ class FPN(BaseDecoder):
 
     @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
-        input_image = features[0]
-
         # Dropping the first channel since we don't use the input image
         features = features[1:]
 
         # Reversing the input channels since we're going from the bottom up
         features = features[::-1]
 
+        # Splitting the features into the input map and the skip connections
         skips = features[1:]
         x = features[0]
 
+        # We process the input map
         x = self.input_block(x)
 
+        # We store the output maps to use them later
         out_maps = [x]
         for skip_block, skip_feature in zip(self.skip_blocks, skips):
             x = skip_block(x, skip_feature)
             out_maps.append(x)
 
+        # We process the output maps
         outputs = []
         for out_block, out_map in zip(self.out_blocks, out_maps):
             x = out_block(out_map)
             outputs.append(x.clone())
 
-        outputs = self._fix_output_sizes(outputs, input_image)
+        # We fix the output sizes in case of weird shapes
+        outputs = self._fix_output_sizes(outputs)
 
         result = torch.cat(outputs, dim=1)
 
@@ -109,10 +112,11 @@ class FPN(BaseDecoder):
 
         return upsample_layers
 
-    def _fix_output_sizes(self, outputs, input_image):
+    def _fix_output_sizes(self, outputs):
+        # We fix the sizes to be all exactly the same as the last one
         new_outputs = []
-        for output in outputs:
-            resized, _ = self.mismatch_layer(output, input_image)
+        for output in outputs[:-1]:
+            resized, _ = self.mismatch_layer(output, outputs[-1])
             new_outputs.append(resized)
 
         return new_outputs
