@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-import warnings
 from functools import wraps
 
 import torch.nn.functional as F
 from torch import Tensor
+
+from .resizing_warning import check_if_resizing_is_too_big
 
 
 def pad_to_match(x: Tensor, skip: Tensor) -> Tensor:
@@ -54,14 +55,3 @@ def size_control(func):
         return output
 
     return wrapper
-
-
-def check_if_resizing_is_too_big(img_size, out_size):
-    for outdim, featdim in zip(out_size, img_size):
-        if outdim < featdim / 1.5 or outdim > featdim * 1.5:
-            warnings.warn(
-                f"""
-                End Resizing Warning: Something might be wrong with the decoder.
-                Output shape: {out_size} - Input shape: {img_size}
-                """
-            )
