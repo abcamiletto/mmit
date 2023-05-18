@@ -78,13 +78,13 @@ class FPN(BaseDecoder):
         # We process the input map
         x = self.input_block(x)
 
-        # We store the output maps to use them later
+        # We store build the pyramid of features
         out_maps = [x]
         for skip_block, skip_feature in zip(self.skip_blocks, skips):
             x = skip_block(x, skip_feature)
             out_maps.append(x)
 
-        # We process the output maps
+        # We process the pyramid of features
         outputs = []
         for out_block, out_map in zip(self.out_blocks, out_maps):
             x = out_block(out_map)
