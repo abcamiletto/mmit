@@ -1,4 +1,8 @@
+from cursed_net import CursedNet
+
 import mmit
 
-TIMM_ENCODERS = ["resnet18", "tf_efficientnet_b0", "resnext26ts", "skresnet18"]
+mmit.register_encoder(CursedNet)
+
+TIMM_ENCODERS = ["resnet18", "cursednet"]
 DECODERS = mmit.list_decoders()
