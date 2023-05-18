@@ -46,7 +46,7 @@ class BaseDecoder(nn.Module):
         if len(channels) == 0:
             raise ValueError("The number of input channels must be greater than 0.")
 
-        if len(channels) > 6:
+        if len(channels) > 7:
             raise ValueError("The number of input features must be less than 6.")
 
         # Check if reductions are powers of 2
