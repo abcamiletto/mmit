@@ -60,9 +60,12 @@ class FPN(BaseDecoder):
         # Input block for the first layer
         self.input_block = nn.Conv2d(input_channels[0], decoder_channel, 1)
 
+        # Mismatch layer in case for weird sizes
+        self.mismatch_layer = mismatch_layer()
+
     @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
-        self.image_size = features[0].shape[-2:]
+        input_image = features[0]
 
         # Dropping the first channel since we don't use the input image
         features = features[1:]
@@ -85,7 +88,7 @@ class FPN(BaseDecoder):
             x = out_block(out_map)
             outputs.append(x.clone())
 
-        outputs = self._fix_output_sizes(outputs)
+        outputs = self._fix_output_sizes(outputs, input_image)
 
         result = torch.cat(outputs, dim=1)
 
@@ -106,14 +109,10 @@ class FPN(BaseDecoder):
 
         return upsample_layers
 
-    def _fix_output_sizes(self, outputs):
+    def _fix_output_sizes(self, outputs, input_image):
         new_outputs = []
-        for i, output in enumerate(outputs):
-            if output.shape[-2:] != self.image_size:
-                output = nn.functional.interpolate(
-                    output, size=self.image_size, mode="bilinear", align_corners=False
-                )
-
-            new_outputs.append(output)
+        for output in outputs:
+            resized, _ = self.mismatch_layer(output, input_image)
+            new_outputs.append(resized)
 
         return new_outputs
