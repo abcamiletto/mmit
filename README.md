@@ -58,7 +58,9 @@ In the future, we plan to add support for:
 - [ ] some of timm transformers encoders
 - [ ] torchvision / torchub models
 - [x] UNet and UNet++ decoders
-- [ ] other decoders
+- [ ] FPN
+- [ ] DeepLabV3
+- [ ] DeepLabV3+
 - [ ] API for building end-to-end models
 - [ ] multiple heads
 - [ ] popular loss function
