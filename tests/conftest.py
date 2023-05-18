@@ -1,4 +1,9 @@
+from demo_encoders import ClassicNet, CursedNet
+
 import mmit
 
-TIMM_ENCODERS = ["resnet18", "tf_efficientnet_b0", "resnext26ts", "skresnet18"]
+mmit.register_encoder(CursedNet)
+mmit.register_encoder(ClassicNet)
+
+TEST_ENCODERS = ["classicnet", "cursednet"]
 DECODERS = mmit.list_decoders()
