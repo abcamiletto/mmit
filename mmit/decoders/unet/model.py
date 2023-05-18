@@ -8,12 +8,12 @@ from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
-from ..utils import size_control
+from ..utils.resize import size_control
 from .parts import UpBlock
 
 __all__ = ["UNet"]
 
-DEFAULT_CHANNELS = (256, 128, 64, 32, 16)
+DEFAULT_CHANNELS = (256, 128, 64, 32, 16, 8)
 
 
 @register
