@@ -4,6 +4,7 @@ from typing import List, Type
 import torch
 from torch import nn
 
+from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
@@ -27,12 +28,13 @@ class FPN(BaseDecoder):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__(input_channels, input_reductions)
 
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
 
-        specs = norm_layer, activation, extra_layer
+        specs = norm_layer, activation, extra_layer, mismatch_layer
         input_channels = input_channels[1:][::-1]
 
         # Setting up the skip blocks

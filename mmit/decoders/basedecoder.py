@@ -11,14 +11,12 @@ class BaseDecoder(nn.Module):
         self,
         input_channels: List[int],
         input_reductions: List[int],
-        mismatch_fix_strategy: str = "pad",
     ):
         super().__init__()
         self._validate_input(input_channels, input_reductions)
 
         self.input_channels = input_channels
         self.input_reductions = input_reductions
-        self.mismatch_handling_mode = mismatch_fix_strategy
 
     def forward(self, *features: Tensor) -> Union[Tensor, List[Tensor]]:
         """Forward pass of the decoder.
@@ -34,7 +32,6 @@ class BaseDecoder(nn.Module):
             f"{self.__class__.__name__}("
             f"input_channels={self.input_channels}, "
             f"input_reductions={self.input_reductions}, "
-            f"mismatch_handling_mode={self.mismatch_handling_mode}"
             f")"
         )
 
@@ -46,7 +43,7 @@ class BaseDecoder(nn.Module):
         if len(channels) == 0:
             raise ValueError("The number of input channels must be greater than 0.")
 
-        if len(channels) > 6:
+        if len(channels) > 7:
             raise ValueError("The number of input features must be less than 6.")
 
         # Check if reductions are powers of 2

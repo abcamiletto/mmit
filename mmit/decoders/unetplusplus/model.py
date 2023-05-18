@@ -4,11 +4,12 @@ from typing import Type
 import torch
 import torch.nn as nn
 
+from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
-from ..unet.parts import UpBlock
+from ..unet.parts import UBlock
 from ..utils.resize import size_control
 
 __all__ = ["UNetPlusPlus"]
@@ -38,6 +39,7 @@ class UNetPlusPlus(BaseDecoder):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
         super().__init__(input_channels, input_reductions)
         self.depth = len(input_channels)
@@ -47,13 +49,13 @@ class UNetPlusPlus(BaseDecoder):
 
         channels = self._format_channels(input_channels, decoder_channels)
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
-        specs = norm_layer, activation, extra_layer
+        specs = norm_layer, activation, extra_layer, mismatch_layer
 
         blocks = {}
         for key, (in_ch, skip_ch, out_ch) in channels.items():
             didx = int(key.split("_")[0])
             up_lay = up_lays[didx]
-            blocks[key] = UpBlock(in_ch, skip_ch, out_ch, up_lay, *specs)
+            blocks[key] = UBlock(in_ch, skip_ch, out_ch, up_lay, *specs)
 
         self.blocks = nn.ModuleDict(blocks)
 
