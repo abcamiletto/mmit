@@ -1,4 +1,4 @@
-# Multi-Models for Images in pyTorch (MMIT)
+# Multi-Models for Images in pyTorch (MMIT) <!-- omit in toc -->
 
 <div align="center">
 
@@ -10,7 +10,12 @@
 
 </div>
 
-## Main Features
+- [Main Features](#main-features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [To Do List](#to-do-list)
+
+## [Main Features](#main-features)
 
 **mmit** is engineered with the objective of streamlining the construction of Computer Vision models. It offers a consistent interface for all encoders and decoders, thus enabling effortless integration of any desired combination.
 
@@ -26,7 +31,7 @@ Wrapping up, our main features are:
 - Modular decoders that works with any encoders
 - Pretrained encoder+decoders modules
 
-## Installation
+## [Installation](#installation)
 
 We can simply install mmit using pip:
 
@@ -34,7 +39,7 @@ We can simply install mmit using pip:
 pip install mmit
 ```
 
-## Quick Start
+## [Quick Start](#quick-start)
 
 Let's look at a super simple example of how to use mmit:
 
@@ -50,7 +55,7 @@ features = encoder(x)
 out = decoder(*features)
 ```
 
-## To Do List
+## [To Do List](#to-do-list)
 
 In the future, we plan to add support for:
 
@@ -58,16 +63,18 @@ In the future, we plan to add support for:
 - [ ] some of timm transformers encoders
 - [ ] torchvision / torchub models
 - [x] UNet and UNet++ decoders
-- [ ] FPN
+- [x] FPN
 - [ ] DeepLabV3
 - [ ] DeepLabV3+
 - [ ] API for building end-to-end models
+- [ ] models create calls with string arguments
+- [ ] lightning script to train models
 - [ ] multiple heads
 - [ ] popular loss function
 - [ ] popular datasets
 - [ ] popular metrics
 
-## Awesome Sources
+## [Awesome Sources](#awesome-sources) <!-- omit in toc -->
 
 - [PyTorch](https://pytorch.org/)
 - [PyTorch Lightning](https://www.pytorchlightning.ai/)
