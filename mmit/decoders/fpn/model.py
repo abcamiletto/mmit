@@ -26,7 +26,7 @@ class FPN(BaseDecoder):
         decoder_channel: int = DEFAULT_CHANNEL,
         upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
-        activation: Type[nn.Module] = nn.ReLU,
+        activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
@@ -34,7 +34,7 @@ class FPN(BaseDecoder):
 
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
 
-        specs = norm_layer, activation, extra_layer, mismatch_layer
+        specs = norm_layer, activation_layer, extra_layer, mismatch_layer
         input_channels = input_channels[1:][::-1]
 
         # Setting up the skip blocks
@@ -47,7 +47,7 @@ class FPN(BaseDecoder):
         self.skip_blocks = nn.ModuleList(skip_blocks)
 
         # Setting up the output blocks
-        specs = norm_layer, activation, extra_layer
+        specs = norm_layer, activation_layer, extra_layer
 
         out_blocks = []
         for red in input_reductions[1:][::-1]:

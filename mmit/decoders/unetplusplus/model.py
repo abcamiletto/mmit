@@ -37,7 +37,7 @@ class UNetPlusPlus(BaseDecoder):
         decoder_channels: list[int] = None,
         upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
-        activation: Type[nn.Module] = nn.ReLU,
+        activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
     ):
@@ -49,7 +49,7 @@ class UNetPlusPlus(BaseDecoder):
 
         channels = self._format_channels(input_channels, decoder_channels)
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
-        specs = norm_layer, activation, extra_layer, mismatch_layer
+        specs = norm_layer, activation_layer, extra_layer, mismatch_layer
 
         blocks = {}
         for key, (in_ch, skip_ch, out_ch) in channels.items():

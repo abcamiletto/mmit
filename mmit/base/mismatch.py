@@ -3,6 +3,8 @@ import warnings
 import torch.nn as nn
 import torch.nn.functional as F
 
+__all__ = ["Pad", "Interpolate"]
+
 
 class Pad(nn.Module):
     def __init__(self, warn_if_resize_too_big=True):
@@ -66,3 +68,9 @@ def check_if_resizing_is_too_big(img_size, out_size):
             Output shape: {out_size} - Input shape: {img_size}
             """
         )
+
+
+mismatch_builder = {
+    "pad": Pad,
+    "interpolate": Interpolate,
+}
