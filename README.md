@@ -1,4 +1,4 @@
-![LogoTitle](docs/source/_static/logo_title.png)
+![LogoTitle](docs/source/_static/logo/logo_title.png)
 
 <!--Introduction-->
 

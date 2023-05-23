@@ -15,7 +15,7 @@
 ```
 
 ```{toctree}
-:caption: 'User Guide:'
+:caption: 'User Guide'
 :maxdepth: 1
 
 guide/install
@@ -24,22 +24,23 @@ guide/examples
 ```
 
 ```{toctree}
-:caption: 'Decoders:'
+:caption: 'Decoders'
 :maxdepth: 1
 
 modules/decoders/unet
 modules/decoders/unet++
 modules/decoders/fpn
+```
 
 ```{toctree}
-:caption: 'Encoders:'
+:caption: 'Encoders'
 :maxdepth: 1
 
 modules/encoders/timm
 ```
 
 ```{toctree}
-:caption: 'API Reference:'
+:caption: 'API'
 :maxdepth: 1
 
 autoapi/index
