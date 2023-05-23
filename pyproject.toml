@@ -20,12 +20,14 @@ Repository = "https://github.com/abcamiletto/mmit"
 
 [project.optional-dependencies]
 dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
-docs = ["sphinx",
+docs = ["sphinx==7.0.1",
         "sphinx-autobuild",
         "sphinx-rtd-theme",
         "sphinxcontrib.spelling",
         "sphinx-autodoc-typehints",
-        "sphinx_copybutton"
+        "sphinx_copybutton",
+        "sphinx-autoapi",
+        "myst-parser"
 ]
 
 [tool.setuptools.packages.find]
