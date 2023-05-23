@@ -33,3 +33,8 @@ myst_heading_anchors = 2
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+html_logo = "_static/logo/logo.png"
+
+
+def setup(app):
+    app.add_css_file("css/baseline.css")
