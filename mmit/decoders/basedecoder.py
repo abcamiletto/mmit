@@ -26,6 +26,11 @@ class BaseDecoder(nn.Module):
         """
         raise NotImplementedError
 
+    @property
+    def out_classes(self) -> int:
+        """Number of output classes."""
+        raise NotImplementedError
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("

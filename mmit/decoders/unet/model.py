@@ -61,6 +61,7 @@ class UNet(BaseDecoder):
             blocks.append(ublock)
 
         self.blocks = nn.ModuleList(blocks)
+        self._output_classes = out_ch[-1]
 
     @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
@@ -78,6 +79,10 @@ class UNet(BaseDecoder):
             x = decoder_block(x, skip)
 
         return x
+
+    @property
+    def out_classes(self) -> int:
+        return self._output_classes
 
     def _format_channels(self, input_channels, decoder_channels):
         # We drop the first channel since we don't use the input image
