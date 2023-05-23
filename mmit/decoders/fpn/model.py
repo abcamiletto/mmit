@@ -19,6 +19,21 @@ DEFAULT_CHANNEL = 256
 
 @register
 class FPN(BaseDecoder):
+    """
+    Implementation of the FPN decoder. Paper: https://arxiv.org/abs/1612.03144
+
+    Args:
+        input_channels: The channels of the input features.
+        input_reductions: The reduction factor of the input features.
+        decoder_channel: The channel to use on the decoder.
+        upsample_layer: Layer to use for the upsampling.
+        norm_layer: Normalization layer to use.
+        activation_layer: Activation function to use.
+        extra_layer: Addional layer to use.
+        mismatch_layer: Strategy to deal with odd resolutions.
+
+    """
+
     def __init__(
         self,
         input_channels: List[int],

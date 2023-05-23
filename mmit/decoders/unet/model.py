@@ -19,6 +19,21 @@ DEFAULT_CHANNELS = (256, 128, 64, 32, 16, 8)
 
 @register
 class UNet(BaseDecoder):
+    """
+    Implementation of the U-Net decoder. Paper: https://arxiv.org/abs/1505.04597
+
+    Args:
+        input_channels: The channels of the input features.
+        input_reductions: The reduction factor of the input features.
+        decoder_channels: The channels on each layer of the decoder.
+        upsample_layer: Layer to use for the upsampling.
+        norm_layer: Normalization layer to use.
+        activation_layer: Activation function to use.
+        extra_layer: Addional layer to use.
+        mismatch_layer: Strategy to deal with odd resolutions.
+
+    """
+
     def __init__(
         self,
         input_channels: List[int],

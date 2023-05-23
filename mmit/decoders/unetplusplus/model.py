@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Type
+from typing import List, Type
 
 import torch
 import torch.nn as nn
@@ -19,7 +19,8 @@ DEFAULT_CHANNELS = (256, 128, 64, 32, 16, 8)
 
 @register
 class UNetPlusPlus(BaseDecoder):
-    """UNet++ decoder implementation from https://arxiv.org/abs/1807.10165.
+    """
+    Implementation of the U-Net++ decoder. Paper: https://arxiv.org/abs/1807.10165.
 
     In this implementation, we follow the following naming convention referring to Figure 1.a in the paper:
         - `lidx` is the layer index, i.e. the index that spans horizontally.
@@ -28,13 +29,23 @@ class UNetPlusPlus(BaseDecoder):
         - `i_j` will also be the key of the resulting tensor after the block that is at depth `i` and layer `j`.
 
     Since we implement only the decoder, there will be no `i_0` blocks, and the `i_0` tensors will be the input tensors.
+
+    Args:
+        input_channels: The channels of the input features.
+        input_reductions: The reduction factor of the input features.
+        decoder_channels: The channels on each layer of the decoder.
+        upsample_layer: Layer to use for the upsampling.
+        norm_layer: Normalization layer to use.
+        activation_layer: Activation function to use.
+        extra_layer: Addional layer to use.
+        mismatch_layer: Strategy to deal with odd resolutions.
     """
 
     def __init__(
         self,
-        input_channels: list[int],
-        input_reductions: list[int],
-        decoder_channels: list[int] = None,
+        input_channels: List[int],
+        input_reductions: List[int],
+        decoder_channels: List[int] = None,
         upsample_layer: Type[nn.Module] = up.ConvTranspose2d,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation_layer: Type[nn.Module] = nn.ReLU,
