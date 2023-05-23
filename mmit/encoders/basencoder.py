@@ -12,8 +12,8 @@ class BaseEncoder(nn.Module):
             x: Input tensor of shape (B, C, H, W)
 
         Returns:
-            A list of tensors of shape (B, C, H, W) with the features.
-            The first element is the input tensor.
+            A list of tensors of shape (B, C, H // fi, W // fi) with the features.
+            The first element is the input tensor, fi is the reduction factor of the i-th feature.
         """
         raise NotImplementedError
 

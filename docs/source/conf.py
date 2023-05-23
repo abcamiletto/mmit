@@ -18,14 +18,12 @@ extensions = [
     "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "autoapi.extension",
     "sphinx_copybutton",
     "sphinx_autodoc_typehints",
 ]
 
 templates_path = ["_templates"]
 exclude_patterns = []
-autoapi_dirs = ["../../mmit"]
 myst_heading_anchors = 2
 
 # -- Options for HTML output -------------------------------------------------

@@ -11,21 +11,27 @@ __all__ = ["TimmEncoder"]
 
 @register
 class TimmEncoder(BaseEncoder):
-    """Wrapper for timm encoders. Inspired by segmentation_models_pytorch."""
+    """
+    Wrapper for timm encoders.
+
+    Args:
+        name: The name of the timm encoder.
+        pretrained: If True, returns a model pre-trained on ImageNet.
+        in_chans: The number of input channels.
+        out_indices: The indices of the layers to return.
+        output_stride: The output stride of the encoder.
+    """
 
     def __init__(
         self,
         name: str,
         pretrained: bool = True,
         in_chans: int = 3,
-        out_indices: int | tuple = 5,
+        out_indices: tuple = (0, 1, 2, 3, 4),
         output_stride: int = 32,
         **kwargs,
     ):
         super().__init__()
-
-        if isinstance(out_indices, (int, float)):
-            out_indices = tuple(range(out_indices))
 
         model_kwargs = {
             "pretrained": pretrained,

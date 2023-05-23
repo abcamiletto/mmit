@@ -39,13 +39,6 @@ modules/decoders/fpn
 modules/encoders/timm
 ```
 
-```{toctree}
-:caption: 'API'
-:maxdepth: 1
-
-autoapi/index
-```
-
 ## Indices and tables
 
 - {ref}`genindex`
