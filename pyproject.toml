@@ -9,9 +9,9 @@ readme = "README.md"
 authors = [{ name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" }]
 dependencies = [
     "timm>=0.9.0",
-    "torch>=1.9"
+    "torch>=1.10"
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 version = "0.0.4"
 
 [project.urls]
