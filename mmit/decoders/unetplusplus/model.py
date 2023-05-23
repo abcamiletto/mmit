@@ -69,6 +69,7 @@ class UNetPlusPlus(BaseDecoder):
             blocks[key] = UBlock(in_ch, skip_ch, out_ch, up_lay, *specs)
 
         self.blocks = nn.ModuleDict(blocks)
+        self._out_classes = out_ch
 
     @size_control
     def forward(self, *features):
@@ -92,6 +93,10 @@ class UNetPlusPlus(BaseDecoder):
         final_output = features[f"0_{self.depth-1}"]
 
         return final_output
+
+    @property
+    def out_classes(self):
+        return self._out_classes
 
     def _preprocess_features(self, features):
         """Preprocess features by removing the first feature and reversing the order."""

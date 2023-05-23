@@ -71,6 +71,7 @@ class FPN(BaseDecoder):
             out_blocks.append(block)
 
         self.out_blocks = nn.ModuleList(out_blocks)
+        self._out_classes = decoder_channel * len(out_blocks)
 
         # Input block for the first layer
         self.input_block = nn.Conv2d(input_channels[0], decoder_channel, 1)
@@ -109,8 +110,11 @@ class FPN(BaseDecoder):
         outputs = self._fix_output_sizes(outputs)
 
         result = torch.cat(outputs, dim=1)
-
         return result
+
+    @property
+    def out_classes(self) -> int:
+        return self._out_classes
 
     def _format_upsample_layers(self, input_reductions, upsample_layer):
         # We reverse the input reductions since we're going from the bottom up
@@ -129,9 +133,10 @@ class FPN(BaseDecoder):
 
     def _fix_output_sizes(self, outputs):
         # We fix the sizes to be all exactly the same as the last one
-        new_outputs = []
+        higher_res_output = outputs[-1]
+        new_outputs = [higher_res_output]
         for output in outputs[:-1]:
-            resized, _ = self.mismatch_layer(output, outputs[-1])
+            resized, _ = self.mismatch_layer(output, higher_res_output)
             new_outputs.append(resized)
 
         return new_outputs
