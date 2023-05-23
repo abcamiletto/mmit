@@ -2,19 +2,23 @@
 
 <div align="center">
 
- **mmit** is a python library with pretrained building blocks for Computer Vision models.
+ **mmit** is a python library with pretrained building blocks for Computer Vision experiments.
 
 [![License badge](https://img.shields.io/github/license/abcamiletto/mmit?style=for-the-badge)](https://github.com/abcamiletto/mmit/blob/master/LICENSE)
 ![PyTorch - Version](https://img.shields.io/badge/PYTORCH-1.10+-red?style=for-the-badge&logo=pytorch)
 ![Python - Version](https://img.shields.io/badge/PYTHON-3.8+-red?style=for-the-badge&logo=python&logoColor=white)
 
-</div>
+ </div>
+
+Let's take a look at the table of content!
 
 - [Main Features](#main-features)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [To Do List](#to-do-list)
 
+
+  
 ## [Main Features](#main-features)
 
 **mmit** is engineered with the objective of streamlining the construction of Computer Vision models. It offers a consistent interface for all encoders and decoders, thus enabling effortless integration of any desired combination.
