@@ -1,5 +1,7 @@
 import torch.nn as nn
 
+__all__ = ["Upsample", "ConvTranspose2d"]
+
 
 class Upsample(nn.Upsample):
     def __init__(self, in_channels: int, scale: int = 2):
@@ -18,3 +20,9 @@ class ConvTranspose2d(nn.ConvTranspose2d):
             kernel_size=scale,
             stride=scale,
         )
+
+
+upsampler_builder = {
+    "interpolate": Upsample,
+    "conv-transposed": ConvTranspose2d,
+}
