@@ -1,4 +1,6 @@
-# Multi-Models for Images in pyTorch (MMIT) <!-- omit in toc -->
+![LogoTitle](docs/source/_static/logo_title.png)
+
+# **M**ulti-**M**odels for **I**mages in **T**orch (mmit) <!-- omit in toc --> <!--Introduction-->
 
 <div align="center">
 
@@ -8,42 +10,44 @@
 ![PyTorch - Version](https://img.shields.io/badge/PYTORCH-1.10+-red?style=for-the-badge&logo=pytorch)
 ![Python - Version](https://img.shields.io/badge/PYTHON-3.8+-red?style=for-the-badge&logo=python&logoColor=white)
 
- </div>
+</div>
+<!--End Introduction-->
 
-Let's take a look at the table of content!
+Let's take a look at what we have here!
 
-- [Main Features](#main-features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [To Do List](#to-do-list)
+- [**M**ulti-**M**odels for **I**mages in **T**orch (mmit)](#multi-models-for-images-in-torch-mmit--)
+  - [Main Features](#main-features-)
+  - [Installation](#installation-)
+  - [Quick Start](#quick-start-)
+  - [To Do List](#to-do-list)
 
-
-  
-## [Main Features](#main-features)
+## [Main Features](#main-features) <!--Main Features-->
 
 **mmit** is engineered with the objective of streamlining the construction of Computer Vision models. It offers a consistent interface for all encoders and decoders, thus enabling effortless integration of any desired combination.
 
-In terms of encoders, mmit is compatible with all encoders from [timm](https://github.com/huggingface/pytorch-image-models) utilizing a standardized API. However, it is noteworthy that timm does not accommodate feature extraction for transformer encoders. To resolve this, we have adopted a principled stance and introduced support for a select number of these encoders.
+Here are just a few of the things that mmit does well:
 
-Regarding decoders, mmit currently facilitates UNet and UNet++ decoders, again employing a unified API. Our roadmap includes plans for incorporating additional decoders in the future.
-
-One of the distinctive features of mmit is its ability to automatically construct the decoder to correspond with the output shape of any given encoder. This ensures seamless compatibility and interoperability, enhancing the user experience and the efficiency of model building.
-
-Wrapping up, our main features are:
-
-- Feature Extraction with Transformer Backbones
-- Modular decoders that works with any encoders
+- **Unified interface** for all decoders
+- Support for all pretrained **encoders from timm**
+- Modular design for every decoder:
+  - Compatible with any type of encoder shape
+  - Compatible with any type of 2D input shape
 - Pretrained encoder+decoders modules
+- PEP8 compliant (unified code style)
+- Documented functions and classes
+- Tests, high code coverage and type hints
+- Clean code
+<!--End Main Features-->
+## [Installation](#installation) <!--Installation-->
 
-## [Installation](#installation)
+To install mmit:
 
-We can simply install mmit using pip:
-
-```bash
+```console
 pip install mmit
 ```
+<!--End Installation-->
 
-## [Quick Start](#quick-start)
+## [Quick Start](#quick-start) <!--Quick Start-->
 
 Let's look at a super simple example of how to use mmit:
 
@@ -58,7 +62,7 @@ x = torch.randn(2, 3, 256, 256)
 features = encoder(x)
 out = decoder(*features)
 ```
-
+<!--End Quick Start-->
 ## [To Do List](#to-do-list)
 
 In the future, we plan to add support for:
