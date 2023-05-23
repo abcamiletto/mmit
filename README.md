@@ -1,6 +1,6 @@
 ![LogoTitle](docs/source/_static/logo_title.png)
 
-# **M**ulti-**M**odels for **I**mages in **T**orch (mmit) <!-- omit in toc --> <!--Introduction-->
+<!--Introduction-->
 
 <div align="center">
 
@@ -15,11 +15,10 @@
 
 Let's take a look at what we have here!
 
-- [**M**ulti-**M**odels for **I**mages in **T**orch (mmit)](#multi-models-for-images-in-torch-mmit--)
-  - [Main Features](#main-features-)
-  - [Installation](#installation-)
-  - [Quick Start](#quick-start-)
-  - [To Do List](#to-do-list)
+- [Main Features](#main-features-)
+- [Installation](#installation-)
+- [Quick Start](#quick-start-)
+- [To Do List](#to-do-list)
 
 ## [Main Features](#main-features) <!--Main Features-->
 
