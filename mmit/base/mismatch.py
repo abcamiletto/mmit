@@ -1,4 +1,5 @@
 import warnings
+from typing import Type
 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -70,7 +71,32 @@ def check_if_resizing_is_too_big(img_size, out_size):
         )
 
 
-mismatch_builder = {
-    "pad": Pad,
-    "interpolate": Interpolate,
-}
+def get_mismatch_class(mismatch_layer_name: str) -> Type[nn.Module]:
+    """
+    Create a mismatch layer based on the provided mismatch layer name.
+
+    Args:
+        mismatch_layer_name: Name of the mismatch layer.
+
+    Returns:
+        Class of the mismatch layer.
+
+    Raises:
+        ValueError: If an invalid mismatch layer name is provided.
+
+    Available mismatch layer names:
+        - 'pad': Pad layer.
+        - 'interpolate': Interpolate layer.
+    """
+    mismatch_builder = {
+        "pad": Pad,
+        "interpolate": Interpolate,
+    }
+
+    try:
+        return mismatch_builder[mismatch_layer_name]
+    except KeyError:
+        raise ValueError(
+            f"Invalid mismatch layer: {mismatch_layer_name}. "
+            f"Available options are: {', '.join(mismatch_builder.keys())}"
+        )

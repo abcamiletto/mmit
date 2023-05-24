@@ -26,16 +26,14 @@ Let's take a look at what we have here!
 
 Here are just a few of the things that mmit does well:
 
+- **Any encoder works with any decoder at any input size**
 - **Unified interface** for all decoders
 - Support for all pretrained **encoders from timm**
-- Modular design for every decoder:
-  - Compatible with any type of encoder shape
-  - Compatible with any type of 2D input shape
-- Pretrained encoder+decoders modules
+- Pretrained encoder+decoders modules 🚧
 - PEP8 compliant (unified code style)
-- Documented functions and classes
 - Tests, high code coverage and type hints
 - Clean code
+
 <!--End Main Features-->
 ## [Installation](#installation) <!--Installation-->
 

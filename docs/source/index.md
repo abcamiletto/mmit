@@ -24,6 +24,15 @@ guide/examples
 ```
 
 ```{toctree}
+:caption: 'API to ...'
+:maxdepth: 1
+
+api/create_model
+api/create_decoder
+api/create_encoder
+```
+
+```{toctree}
 :caption: 'Decoders'
 :maxdepth: 1
 

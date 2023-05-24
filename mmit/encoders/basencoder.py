@@ -5,6 +5,15 @@ from torch import Tensor
 
 
 class BaseEncoder(nn.Module):
+    def __init__(
+        self,
+        pretrained: bool = True,
+        in_chans: int = 3,
+        out_indices: tuple = (0, 1, 2, 3, 4),
+        output_stride: int = 32,
+    ):
+        super().__init__()
+
     def forward(self, x: Tensor) -> list[Tensor]:
         """Forward pass of the encoder
 

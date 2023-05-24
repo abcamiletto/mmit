@@ -1,13 +1,12 @@
-from typing import Dict, Union
+from typing import Dict
 
-import torch.nn as nn
 
 from ..base import (
-    activation_builder,
-    extra_builder,
-    mismatch_builder,
-    norm_builder,
-    upsampler_builder,
+    get_activation_class,
+    get_extra_class,
+    get_mismatch_class,
+    get_norm_class,
+    get_upsamples_class,
 )
 
 
@@ -18,33 +17,27 @@ def build_components(cfg: Dict) -> Dict:
 
     if "upsample_layer" in cfg:
         name = cfg["upsample_layer"]
-        components["upsample_layer"] = get_comp(upsampler_builder, name)
+        layer = get_upsamples_class(name) if isinstance(name, str) else name
+        components["upsample_layer"] = layer
 
     if "norm_layer" in cfg:
         name = cfg["norm_layer"]
-        components["norm_layer"] = get_comp(norm_builder, name)
+        layer = get_norm_class(name) if isinstance(name, str) else name
+        components["norm_layer"] = layer
 
     if "activation_layer" in cfg:
         name = cfg["activation_layer"]
-        components["activation_layer"] = get_comp(activation_builder, name)
+        layer = get_activation_class(name) if isinstance(name, str) else name
+        components["activation_layer"] = layer
 
     if "mismatch_layer" in cfg:
         name = cfg["mismatch_layer"]
-        components["mismatch_layer"] = get_comp(mismatch_builder, name)
+        layer = get_mismatch_class(name) if isinstance(name, str) else name
+        components["mismatch_layer"] = layer
 
     if "extra_layer" in cfg:
         name = cfg["extra_layer"]
-        components["extra_layer"] = get_comp(extra_builder, name)
+        layer = get_extra_class(name) if isinstance(name, str) else name
+        components["extra_layer"] = layer
 
     return components
-
-
-def get_comp(builder: Dict[str, nn.Module], name: Union[str, nn.Module]) -> nn.Module:
-    """Get a component from a builder."""
-    if isinstance(name, nn.Module):
-        return name
-
-    if name not in builder:
-        raise KeyError(f"{name} is not in {builder.keys()}")
-
-    return builder[name]
