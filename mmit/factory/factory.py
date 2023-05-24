@@ -93,8 +93,8 @@ def create_model(
         decoder_name: The name of the decoder.
         classes: The number of classes.
         task: The task of the model.
-        encoder_cfg: Keyword arguments for the encoder.
-        decoder_cfg: Keyword arguments for the decoder.
+        encoder_cfg: Keyword arguments for the encoder. Check the specific encoder docs for more info.
+        decoder_cfg: Keyword arguments for the decoder. Check the specific decoder docs for more info.
     """
 
     encoder_cfg = encoder_cfg or {}
