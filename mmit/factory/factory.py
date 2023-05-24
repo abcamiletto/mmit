@@ -3,6 +3,7 @@ from typing import List, Optional
 import torch.nn as nn
 
 from ..heads import heads_builder
+from ..models import MmitModel
 from .components import build_components
 from .registry import get_decoder, get_encoder
 
@@ -33,10 +34,14 @@ class Factory:
             kwargs: Keyword arguments for the encoder.
         """
         Encoder = get_encoder(name)
+
+        kwargs["in_chans"] = in_chans
+        if output_stride is not None:
+            kwargs["output_stride"] = output_stride
+        if out_indices is not None:
+            kwargs["out_indices"] = out_indices
+
         encoder = Encoder(
-            in_chans=in_chans,
-            out_indices=out_indices,
-            output_stride=output_stride,
             **kwargs,
         )
         cls.out_channels = encoder.out_channels
@@ -98,4 +103,5 @@ def create_model(
     encoder = create_encoder(encoder_name, **encoder_cfg)
     decoder = create_decoder(decoder_name, **decoder_cfg)
     head = heads_builder[task](decoder.out_classes, classes)
-    return nn.Sequential(encoder, decoder, head)
+
+    return MmitModel(encoder, decoder, head)
