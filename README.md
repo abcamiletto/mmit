@@ -4,7 +4,7 @@
 
 <div align="center">
 
- **mmit** is a python library with pretrained building blocks for Computer Vision experiments.
+ **mmit** is a python library to build any encoder matched with any decoder for any Computer Vision model.
 
 [![License badge](https://img.shields.io/github/license/abcamiletto/mmit?style=for-the-badge)](https://github.com/abcamiletto/mmit/blob/master/LICENSE)
 ![PyTorch - Version](https://img.shields.io/badge/PYTORCH-1.10+-red?style=for-the-badge&logo=pytorch)
