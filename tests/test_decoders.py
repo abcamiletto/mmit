@@ -5,6 +5,22 @@ from conftest import DECODERS, TEST_ENCODERS
 import mmit
 
 
+@pytest.mark.parametrize("decoder_name", DECODERS)
+@pytest.mark.parametrize("activation_name", ["relu", "leaky_relu", "none"])
+def test_timm_decoder_layers(decoder_name, activation_name):
+    """Test that the timm decoder layers work."""
+    placeholder_encoder = mmit.create_encoder("classicnet")
+    decoder = mmit.create_decoder(decoder_name, activation_layer=activation_name)
+
+    x = torch.randn(2, 3, 256, 256)
+    with torch.no_grad():
+        features = placeholder_encoder(x)
+        out = decoder(*features)
+
+    assert out.shape[-2:] == x.shape[-2:]
+    assert out.shape[1] == decoder.out_classes
+
+
 @pytest.mark.parametrize("encoder_name", TEST_ENCODERS)
 @pytest.mark.parametrize("decoder_name", DECODERS)
 def test_timm_encoder_decoder(encoder_name, decoder_name):
