@@ -18,6 +18,7 @@ def test_timm_encoder_decoder(encoder_name, decoder_name):
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
+    assert out.shape[1] == decoder.out_classes
 
 
 @pytest.mark.parametrize("encoder_name", TEST_ENCODERS)
@@ -34,6 +35,7 @@ def test_timm_encoder_decoder_awful_shape(encoder_name, decoder_name, input_shap
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
+    assert out.shape[1] == decoder.out_classes
 
 
 @pytest.mark.parametrize("encoder_name", TEST_ENCODERS)
@@ -51,3 +53,4 @@ def test_timm_encoder_layers_stride_decoder(encoder_name, decoder_name):
         out = decoder(*features)
 
     assert out.shape[-2:] == x.shape[-2:]
+    assert out.shape[1] == decoder.out_classes
