@@ -13,6 +13,8 @@
 </div>
 <!--End Introduction-->
 
+For a quick overview of **mmit**, check out the [documentation](https://mmit.readthedocs.io/en/latest/).
+
 Let's take a look at what we have here!
 
 - [Main Features](#main-features-)
