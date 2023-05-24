@@ -65,14 +65,9 @@ out = decoder(*features)
 In the future, we plan to add support for:
 
 - [x] timm encoders
-- [ ] some of timm transformers encoders
+- [ ] some of timm transformers encoders with feature extraction
 - [ ] torchvision / torchub models
-- [x] UNet and UNet++ decoders
-- [x] FPN
-- [ ] DeepLabV3
-- [ ] DeepLabV3+
-- [ ] API for building end-to-end models
-- [ ] models create calls with string arguments
+- [ ] more decoders
 - [ ] lightning script to train models
 - [ ] multiple heads
 - [ ] popular loss function
