@@ -39,11 +39,11 @@ def get_upsamples_class(upsampler_layer_name: str) -> Type[nn.Module]:
 
     Available upsampler layer names:
         - 'interpolate': Upsample layer.
-        - 'conv-transposed': ConvTranspose2d layer.
+        - 'convtransposed': ConvTranspose2d layer.
     """
     upsampler_builder = {
-        "interpolate": nn.Upsample,
-        "conv-transposed": nn.ConvTranspose2d,
+        "interpolate": Upsample,
+        "convtransposed": ConvTranspose2d,
     }
 
     try:

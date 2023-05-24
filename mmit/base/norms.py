@@ -17,17 +17,13 @@ def get_norm_class(norm_layer_name: str) -> Type[nn.Module]:
         ValueError: If an invalid normalization layer name is provided.
 
     Available normalization layer names:
-        - 'batchnorm': BatchNorm2d layer.
+        - 'batch': BatchNorm2d layer.
         - 'instance': InstanceNorm2d layer.
-        - 'layer': LayerNorm layer.
-        - 'group': GroupNorm layer.
         - 'none': Identity layer.
     """
     norm_builder = {
-        "batchnorm": nn.BatchNorm2d,
+        "batch": nn.BatchNorm2d,
         "instance": nn.InstanceNorm2d,
-        "layer": nn.LayerNorm,
-        "group": nn.GroupNorm,
         "none": nn.Identity,
     }
 
