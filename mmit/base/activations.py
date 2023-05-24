@@ -33,7 +33,7 @@ def get_activation_class(activation_layer_name: str) -> Type[nn.Module]:
     }
 
     try:
-        return activation_builder[activation_layer_name]()
+        return activation_builder[activation_layer_name]
     except KeyError:
         raise ValueError(
             f"Invalid activation layer: {activation_layer_name}. "
