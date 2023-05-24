@@ -31,7 +31,7 @@ class Factory:
             in_chans: The number of input channels.
             out_indices: The indices of the feature maps to return.
             output_stride: The output stride of the encoder.
-            kwargs: Keyword arguments for the encoder.
+            kwargs: Keyword arguments for the encoder. Take a look at the specific encoder docs for more info!
         """
         Encoder = get_encoder(name)
 
@@ -63,6 +63,7 @@ class Factory:
             name: The name of the decoder.
             out_channels: The number of channels of the input tensors of the forward pass.
             out_reductions: The reduction factor of the input tensors of the forward pass.
+            kwargs: Keyword arguments for the decoder. Take a look at the specific decoder docs for more info!
         """
         Decoder = get_decoder(name)
         components = build_components(kwargs)
