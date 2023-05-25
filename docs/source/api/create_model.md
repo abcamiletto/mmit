@@ -1,5 +1,5 @@
 # Build a Model
 
 ```{eval-rst}
-.. autofunction:: mmit.factory.create_model
+.. autofunction:: mmit.create_model
 ```

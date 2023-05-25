@@ -1,5 +1,5 @@
 # Build an Encoder
 
 ```{eval-rst}
-.. autofunction:: mmit.factory.create_encoder
+.. autofunction:: mmit.create_encoder
 ```

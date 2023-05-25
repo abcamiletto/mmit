@@ -1,5 +1,5 @@
 # Build a Decoder
 
 ```{eval-rst}
-.. autofunction:: mmit.factory.create_decoder
+.. autofunction:: mmit.create_decoder
 ```
