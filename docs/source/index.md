@@ -39,6 +39,8 @@ api/create_encoder
 modules/decoders/unet
 modules/decoders/unet++
 modules/decoders/fpn
+modules/decoders/deeplabv3
+modules/decoders/deeplabv3+
 ```
 
 ```{toctree}

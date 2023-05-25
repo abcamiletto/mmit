@@ -10,7 +10,7 @@ from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
 from ..utils import size_control
-from .parts import ConvNormReLU, SkipBlock
+from .parts import ConvNormActivation, SkipBlock
 
 __all__ = ["FPN"]
 
@@ -67,7 +67,7 @@ class FPN(BaseDecoder):
         out_blocks = []
         for red in input_reductions[1:][::-1]:
             up_lay = partial(upsample_layer, scale=red)
-            block = ConvNormReLU(decoder_channel, decoder_channel, up_lay, *specs)
+            block = ConvNormActivation(decoder_channel, decoder_channel, up_lay, *specs)
             out_blocks.append(block)
 
         self.out_blocks = nn.ModuleList(out_blocks)

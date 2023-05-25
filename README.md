@@ -71,12 +71,14 @@ In the future, we plan to add support for:
 - [ ] torchvision / torchub models
 - [ ] more decoders
 - [ ] lightning script to train models
-- [ ] multiple heads
+- [x] multiple heads
 - [ ] popular loss function
 - [ ] popular datasets
 - [ ] popular metrics
 
 ## [Awesome Sources](#awesome-sources) <!-- omit in toc -->
+
+This project is inspired by, and would not be possible without, the following amazing libraries
 
 - [PyTorch](https://pytorch.org/)
 - [PyTorch Lightning](https://www.pytorchlightning.ai/)

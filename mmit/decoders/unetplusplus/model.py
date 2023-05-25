@@ -95,7 +95,7 @@ class UNetPlusPlus(BaseDecoder):
         return final_output
 
     @property
-    def out_classes(self):
+    def out_classes(self) -> int:
         return self._out_classes
 
     def _preprocess_features(self, features):
