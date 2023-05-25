@@ -7,7 +7,7 @@ from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 
 
-class ConvNormReLU(nn.Module):
+class ConvNormActivation(nn.Module):
     def __init__(
         self,
         in_channels: int,
