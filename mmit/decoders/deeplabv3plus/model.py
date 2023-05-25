@@ -9,9 +9,10 @@ from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
+from ..deeplabv3.parts import ConvNormActivation
 from ..utils import size_control
 from .aspp import ASPP
-from .parts import ConvNormActivation, DWSConvNormActivation
+from .parts import DWSConvNormActivation
 
 __all__ = ["DeepLabV3Plus"]
 
