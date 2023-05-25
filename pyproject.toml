@@ -21,7 +21,6 @@ Repository = "https://github.com/abcamiletto/mmit"
 [project.optional-dependencies]
 dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
 docs = ["sphinx==6.2.1",
-        "sphinx==6.2.1",
         "sphinx-rtd-theme==1.2.0",
         "sphinx-copybutton==0.5.2",
         "sphinx-autodoc-typehints==1.23.0",
