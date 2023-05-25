@@ -27,8 +27,7 @@ class DeepLabV3Plus(BaseDecoder):
     To make it compatible with any encoder, we take the following decisions:
 
         - If the input has only one feature map, we only do one upsampling (of course).
-        - If the input has more than one feature map, we do two upsamplings. The first one
-            is done "in the middle" of the decoder, and the second one is done at the end.
+        - Otherwise, we do two. The first one with the "middle" feature, and the last with the last.
 
     Args:
         input_channels: The channels of the input features.
