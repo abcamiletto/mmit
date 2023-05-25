@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Tuple
 
 import torch.nn as nn
 from torch import Tensor
@@ -27,11 +27,11 @@ class BaseEncoder(nn.Module):
         raise NotImplementedError
 
     @property
-    def out_channels(self) -> tuple[int, ...]:
+    def out_channels(self) -> Tuple[int, ...]:
         """Number of channels of the output tensors"""
         raise NotImplementedError
 
     @property
-    def out_reductions(self) -> tuple[int, ...]:
+    def out_reductions(self) -> Tuple[int, ...]:
         """Reduction factor of the output tensors"""
         raise NotImplementedError
