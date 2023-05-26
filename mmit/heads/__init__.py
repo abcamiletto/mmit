@@ -1,4 +1,2 @@
-from .classification import ClassificationHead
-from .segmentation import SegmentationHead
-
-heads_builder = {"classification": ClassificationHead, "segmentation": SegmentationHead}
+from .classification import *
+from .segmentation import *

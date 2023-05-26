@@ -2,9 +2,12 @@ from typing import Type
 
 import torch.nn as nn
 
+from mmit.factory import register
+
 __all__ = ["ClassificationHead"]
 
 
+@register
 class ClassificationHead(nn.Module):
     def __init__(
         self,

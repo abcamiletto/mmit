@@ -3,16 +3,19 @@ from typing import Type
 import torch.nn as nn
 from torch import Tensor
 
+from mmit.factory import register
+
 __all__ = ["SegmentationHead"]
 
 
+@register
 class SegmentationHead(nn.Module):
     def __init__(
         self,
         in_channels: int,
         out_channels: int,
-        kernel_size: int = 1,
-        activation_layer: Type[nn.Module] = nn.ReLU,
+        kernel_size: int = 3,
+        activation_layer: Type[nn.Module] = nn.Identity,
         extra_layer: Type[nn.Module] = nn.Identity,
     ):
         super().__init__()
