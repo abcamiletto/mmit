@@ -2,17 +2,17 @@ from typing import List, Optional
 
 import torch.nn as nn
 
-from ..heads import heads_builder
 from ..models import MmitModel
 from .components import build_components
-from .registry import get_decoder, get_encoder
+from .registry import get_decoder, get_encoder, get_head
 
 __all__ = ["create_encoder", "create_decoder", "create_model"]
 
 
 class Factory:
-    out_channels: List[int]
-    out_reductions: List[int]
+    encoder_channels: List[int]
+    encoder_reductions: List[int]
+    decoder_channels: int
 
     @classmethod
     def create_encoder(
@@ -44,8 +44,8 @@ class Factory:
         encoder = Encoder(
             **kwargs,
         )
-        cls.out_channels = encoder.out_channels
-        cls.out_reductions = encoder.out_reductions
+        cls.encoder_channels = encoder.out_channels
+        cls.encoder_reductions = encoder.out_reductions
         return encoder
 
     @classmethod
@@ -69,40 +69,68 @@ class Factory:
         components = build_components(kwargs)
 
         kwargs.update(components)
-        out_channels = out_channels or cls.out_channels
-        out_reductions = out_reductions or cls.out_reductions
-        return Decoder(out_channels, out_reductions, **kwargs)
+        out_channels = out_channels or cls.encoder_channels
+        out_reductions = out_reductions or cls.encoder_reductions
+
+        decoder = Decoder(out_channels, out_reductions, **kwargs)
+        cls.decoder_channels = decoder.out_classes
+        return decoder
+
+    @classmethod
+    def create_head(
+        cls,
+        task: str,
+        classes: int,
+        in_channels: Optional[int] = None,
+        **kwargs,
+    ) -> nn.Module:
+        """
+        Build a head from a name and some keyword arguments.
+
+        Args:
+            name: The name of the head.
+            in_channels: The number of channels of the input tensors of the forward pass.
+            out_classes: The number of classes of the output tensors of the forward pass.
+            kwargs: Keyword arguments for the head. Take a look at the specific head docs for more info!
+        """
+        Head = get_head(task)
+        in_channels = in_channels or cls.decoder_channels
+
+        head = Head(in_channels, classes, **kwargs)
+        return head
+
+    @classmethod
+    def create_model(
+        cls,
+        encoder_name: str,
+        decoder_name: str,
+        classes: int,
+        task: str = "segmentation",
+        encoder_cfg: dict = None,
+        decoder_cfg: dict = None,
+    ):
+        """
+        Build a model from an encoder and a decoder.
+
+        Args:
+            encoder_name: The name of the encoder.
+            decoder_name: The name of the decoder.
+            classes: The number of classes.
+            task: The task of the model.
+            encoder_cfg: Keyword arguments for the encoder. Check the specific encoder docs for more info.
+            decoder_cfg: Keyword arguments for the decoder. Check the specific decoder docs for more info.
+        """
+
+        encoder_cfg = encoder_cfg or {}
+        decoder_cfg = decoder_cfg or {}
+
+        encoder = cls.create_encoder(encoder_name, **encoder_cfg)
+        decoder = cls.create_decoder(decoder_name, **decoder_cfg)
+        head = cls.create_head(task, classes)
+
+        return MmitModel(encoder, decoder, head)
 
 
 create_encoder = Factory.create_encoder
 create_decoder = Factory.create_decoder
-
-
-def create_model(
-    encoder_name: str,
-    decoder_name: str,
-    classes: int,
-    task: str = "segmentation",
-    encoder_cfg: dict = None,
-    decoder_cfg: dict = None,
-):
-    """
-    Build a model from an encoder and a decoder.
-
-    Args:
-        encoder_name: The name of the encoder.
-        decoder_name: The name of the decoder.
-        classes: The number of classes.
-        task: The task of the model.
-        encoder_cfg: Keyword arguments for the encoder. Check the specific encoder docs for more info.
-        decoder_cfg: Keyword arguments for the decoder. Check the specific decoder docs for more info.
-    """
-
-    encoder_cfg = encoder_cfg or {}
-    decoder_cfg = decoder_cfg or {}
-
-    encoder = create_encoder(encoder_name, **encoder_cfg)
-    decoder = create_decoder(decoder_name, **decoder_cfg)
-    head = heads_builder[task](decoder.out_classes, classes)
-
-    return MmitModel(encoder, decoder, head)
+create_model = Factory.create_model
