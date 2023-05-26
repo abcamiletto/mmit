@@ -24,10 +24,8 @@ DEFAULT_ATROUS_RATES = [12, 24, 36]
 class DeepLabV3Plus(BaseDecoder):
     """
     Implementation of the DeepLabV3+ decoder. Paper: https://arxiv.org/abs/1802.02611
-    To make it compatible with any encoder, we take the following decisions:
-
-        - If the input has only one feature map, we only do one upsampling (of course).
-        - Otherwise, we do two. The first one with the "middle" feature, and the last with the last.
+    To make it compatible with any encoder, the first skip connection is with
+    the "middle" feature and the second one with the last.
 
     Args:
         input_channels: The channels of the input features.
@@ -70,9 +68,6 @@ class DeepLabV3Plus(BaseDecoder):
         up = up_layer(init_ch)
         self.aspp_block = nn.Sequential(aspp, conv, up)
 
-        if len(skip_chans) == 1:
-            return
-
         final_ch = decoder_channels[-1]
         skip_ch = skip_chans[-2]
         up_layer = uplays[-2]
@@ -91,11 +86,7 @@ class DeepLabV3Plus(BaseDecoder):
         x = features[self.skip_idxes[-1]]
         x = self.aspp_block(x)
 
-        if len(features) == 2:
-            return x
-
         skip = features[self.skip_idxes[0]]
-
         skip = self.skip_block(skip)
         x, skip = self.fix_mismatch(x, skip)
         x = torch.cat([x, skip], dim=1)
@@ -109,8 +100,6 @@ class DeepLabV3Plus(BaseDecoder):
 
     def _get_skip_indexes(self, input_reductions: List[int]) -> List[int]:
         n_layers = len(input_reductions)
-        if n_layers == 2:
-            return [1]
         return [n_layers // 2, n_layers - 1]
 
     def _get_skip_reductions(self, input_reductions: List[int]) -> List[int]:
