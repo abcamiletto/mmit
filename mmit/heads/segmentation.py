@@ -19,7 +19,9 @@ class SegmentationHead(nn.Module):
         extra_layer: Type[nn.Module] = nn.Identity,
     ):
         super().__init__()
-        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)
+        self.conv = nn.Conv2d(
+            in_channels, out_channels, kernel_size, padding=kernel_size // 2
+        )
         self.activation = activation_layer()
         self.extra = extra_layer()
 

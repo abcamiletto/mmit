@@ -8,8 +8,10 @@ import torch.nn as nn
 __all__ = [
     "list_encoders",
     "list_decoders",
+    "list_heads",
     "register_decoder",
     "register_encoder",
+    "register_head",
     "register",
 ]
 
@@ -69,8 +71,12 @@ class Registry:
 
     @classmethod
     def get_head(cls, name: str) -> Type[nn.Module]:
+        if (name not in cls._heads) and ((name + "head") not in cls._heads):
+            raise KeyError(f"Head '{name}' is not registered")
+
         if name not in cls._heads:
-            raise KeyError(f"Head {name} is not registered")
+            name = name + "head"
+
         return cls._heads[name]
 
 
