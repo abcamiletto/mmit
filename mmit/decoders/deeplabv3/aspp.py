@@ -3,7 +3,9 @@ from typing import List, Type
 import torch
 import torch.nn as nn
 
-from .parts import ASPPConv, ASPPPooling, ConvNormActivation
+import mmit.base.modules as md
+
+from .parts import ASPPConv, ASPPPooling
 
 
 class ASPP(nn.Module):
@@ -31,7 +33,7 @@ class ASPP(nn.Module):
         specs = norm_layer, activation, extra_layer
 
         modules = []
-        conv = ConvNormActivation(in_channels, out_channels, 1, *specs)
+        conv = md.ConvNormAct(in_channels, out_channels, 1, *specs)
         modules.append(conv)
 
         for rate in atrous_rates:
@@ -43,7 +45,7 @@ class ASPP(nn.Module):
         self.convs = nn.ModuleList(modules)
 
         in_channels = len(self.convs) * out_channels
-        self.project = ConvNormActivation(in_channels, out_channels, 1, *specs)
+        self.project = md.ConvNormAct(in_channels, out_channels, 1, *specs)
         self.dropout = nn.Dropout2d(0.5)
 
     def forward(self, x):

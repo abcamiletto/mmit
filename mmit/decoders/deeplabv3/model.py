@@ -3,13 +3,13 @@ from typing import List, Optional, Type
 import torch
 from torch import nn
 
+import mmit.base.modules as md
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
 from ..utils import size_control
 from .aspp import ASPP
-from .parts import ConvNormActivation
 
 __all__ = ["DeepLabV3"]
 
@@ -56,7 +56,7 @@ class DeepLabV3(BaseDecoder):
         specs = norm_layer, activation_layer, extra_layer
 
         self.aspp = ASPP(in_channel, decoder_channel, atrous_rates, *specs)
-        self.conv = ConvNormActivation(decoder_channel, decoder_channel, 3, *specs)
+        self.conv = md.ConvNormAct(decoder_channel, decoder_channel, 3, *specs)
         scale = self.input_reductions[self.input_index]
         self.up = upsample_layer(decoder_channel, scale=scale)
 

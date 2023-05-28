@@ -4,12 +4,12 @@ from typing import List, Type
 import torch
 from torch import nn
 
+import mmit.base.modules as md
 from mmit.base import mismatch as mm
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
-from ..deeplabv3.parts import ConvNormActivation
 from ..utils import size_control
 from .aspp import ASPP
 from .parts import DWSConvNormActivation
@@ -73,7 +73,7 @@ class DeepLabV3Plus(BaseDecoder):
         up_layer = uplays[-2]
 
         # Setting up the skip connection
-        self.skip_block = ConvNormActivation(skip_ch, skip_ch, 1, *specs)
+        self.skip_block = md.ConvNormAct(skip_ch, skip_ch, 1, *specs)
         self.fix_mismatch = mismatch_layer()
 
         # Setting up the final block
