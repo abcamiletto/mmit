@@ -3,7 +3,7 @@ from typing import Type
 import torch.nn as nn
 import torch.nn.functional as F
 
-import mmit.base.modules as md
+from mmit.base import modules as md
 
 
 class ASPPConv(nn.Module):

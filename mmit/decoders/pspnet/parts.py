@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-import mmit.base.modules as md
+from mmit.base import modules as md
 
 
 class PSPModule(nn.Module):

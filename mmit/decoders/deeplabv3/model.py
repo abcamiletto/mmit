@@ -3,7 +3,7 @@ from typing import List, Optional, Type
 import torch
 from torch import nn
 
-import mmit.base.modules as md
+from mmit.base import modules as md
 from mmit.base import upsamplers as up
 from mmit.factory import register
 

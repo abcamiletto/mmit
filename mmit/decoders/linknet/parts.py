@@ -2,7 +2,7 @@ from typing import Type
 
 import torch.nn as nn
 
-import mmit.base.modules as md
+from mmit.base import modules as md
 
 
 class LinkBlock(nn.Module):

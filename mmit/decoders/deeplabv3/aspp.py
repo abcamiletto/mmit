@@ -3,7 +3,7 @@ from typing import List, Type
 import torch
 import torch.nn as nn
 
-import mmit.base.modules as md
+from mmit.base import modules as md
 
 from .parts import ASPPConv, ASPPPooling
 
