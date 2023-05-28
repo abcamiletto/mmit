@@ -3,7 +3,8 @@ from typing import List, Type
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch import Tensor
+
+import mmit.base.modules as md
 
 
 class PSPModule(nn.Module):
@@ -55,7 +56,7 @@ class PoolBlock(nn.Module):
     ) -> None:
         super().__init__()
         self.pool = nn.AdaptiveAvgPool2d(output_size=(pool_size, pool_size))
-        self.conv = ConvNormActivation(
+        self.conv = md.ConvNormAct(
             in_channels,
             out_channels,
             kernel_size=1,
@@ -69,35 +70,4 @@ class PoolBlock(nn.Module):
         x = self.pool(x)
         x = self.conv(x)
         x = F.interpolate(x, size=(h, w), mode="bilinear", align_corners=True)
-        return x
-
-
-class ConvNormActivation(nn.Module):
-    def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        kernel_size: int,
-        norm_layer: Type[nn.Module] = nn.BatchNorm2d,
-        activation: Type[nn.Module] = nn.ReLU,
-        extra_layer: Type[nn.Module] = nn.Identity,
-    ) -> None:
-        super().__init__()
-
-        self.conv = nn.Conv2d(
-            in_channels,
-            out_channels,
-            kernel_size=kernel_size,
-            padding=kernel_size // 2,
-            bias=False,
-        )
-        self.norm = norm_layer(out_channels)
-        self.activation = activation()
-        self.extra = extra_layer()
-
-    def forward(self, x: Tensor) -> Tensor:
-        x = self.conv(x)
-        x = self.norm(x)
-        x = self.activation(x)
-        x = self.extra(x)
         return x
