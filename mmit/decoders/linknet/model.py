@@ -11,13 +11,13 @@ from ..basedecoder import BaseDecoder
 from ..utils import size_control
 from .parts import LinkBlock
 
-__all__ = ["Linknet"]
+__all__ = ["LinkNet"]
 
 DEFAULT_CHANNEL = 32
 
 
 @register
-class Linknet(BaseDecoder):
+class LinkNet(BaseDecoder):
     """
     Implementation of the Linknet decoder. Paper: https://arxiv.org/abs/1707.03718
 
