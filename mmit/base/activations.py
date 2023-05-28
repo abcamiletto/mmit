@@ -26,7 +26,7 @@ def get_activation_class(activation_layer_name: str) -> Type[nn.Module]:
     """
     activation_builder = {
         "relu": nn.ReLU,
-        "leaky_relu": nn.LeakyReLU,
+        "leakyrelu": nn.LeakyReLU,
         "elu": nn.ELU,
         "selu": nn.SELU,
         "none": nn.Identity,
