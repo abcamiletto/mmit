@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Optional, Type
 
 import torch
 from torch import nn
@@ -21,13 +21,15 @@ DEFAULT_ATROUS_RATES = [12, 24, 36]
 class DeepLabV3(BaseDecoder):
     """
     Implementation of the DeepLabV3 decoder. Paper: https://arxiv.org/abs/1706.05587
-    To follow the paper as much as possible, we only process the feature map closest to the stride 8.
+    To follow the paper as much as possible, we only process the feature map closest to the stride 8 by default.
 
     Args:
         input_channels: The channels of the input features.
         input_reductions: The reduction factor of the input features.
         decoder_channel: The channel to use on the decoder.
         atrous_rates: The atrous rates to use on the ASPP module.
+        feature_index: The index of the feature to use.
+        upsample_layer: Upsampling layer to use.
         norm_layer: Normalization layer to use.
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
@@ -40,13 +42,14 @@ class DeepLabV3(BaseDecoder):
         input_reductions: List[int],
         decoder_channel: int = DEFAULT_CHANNEL,
         atrous_rates: List[int] = DEFAULT_ATROUS_RATES,
+        feature_index: Optional[int] = None,
         upsample_layer: Type[nn.Module] = up.Upsample,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
     ):
         super().__init__(input_channels, input_reductions)
-        self.input_index = self._get_index(input_reductions)
+        self.input_index = feature_index or self._get_index(input_reductions)
         self._out_classes = decoder_channel
 
         in_channel = input_channels[self.input_index]
