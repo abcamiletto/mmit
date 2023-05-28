@@ -43,6 +43,7 @@ modules/decoders/deeplabv3
 modules/decoders/deeplabv3+
 modules/decoders/pspnet
 modules/decoders/linknet
+modules/decoders/pan
 ```
 
 ```{toctree}
