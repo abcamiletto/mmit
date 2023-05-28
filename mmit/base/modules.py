@@ -14,6 +14,7 @@ class ConvNormAct(nn.Module):
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         upsample_layer: Type[nn.Module] = nn.Identity,
+        use_bias: bool = False,
     ) -> None:
         super().__init__()
 
@@ -22,7 +23,7 @@ class ConvNormAct(nn.Module):
             out_channels,
             kernel_size=kernel_size,
             padding=kernel_size // 2,
-            bias=False,
+            bias=use_bias,
         )
         self.norm = norm_layer(out_channels)
         self.activation = activation()
