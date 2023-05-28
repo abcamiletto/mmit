@@ -29,14 +29,14 @@ class ConvNormActivation(nn.Module):
         self.up = upsample_layer(in_channels)
         self.norm = norm_layer(out_channels)
         self.activation = activation()
-        self.extra_layer = extra_layer()
+        self.extra = extra_layer()
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.conv(x)
         x = self.norm(x)
         x = self.activation(x)
         x = self.up(x)
-        x = self.extra_layer(x)
+        x = self.extra(x)
         return x
 
 

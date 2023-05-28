@@ -4,7 +4,7 @@ import torch
 import mmit
 
 
-@pytest.mark.parametrize("activ_name", ["relu", "leaky_relu", "elu", "selu", "none"])
+@pytest.mark.parametrize("activ_name", ["relu", "leakyrelu", "elu", "selu", "none"])
 def test_activ_layers(activ_name):
     """Test that the timm decoder layers work."""
     placeholder_encoder = mmit.create_encoder("classicnet")
