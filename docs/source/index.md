@@ -41,6 +41,8 @@ modules/decoders/unet++
 modules/decoders/fpn
 modules/decoders/deeplabv3
 modules/decoders/deeplabv3+
+modules/decoders/pspnet
+modules/decoders/linknet
 ```
 
 ```{toctree}
