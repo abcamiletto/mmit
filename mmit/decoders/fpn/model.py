@@ -5,12 +5,13 @@ import torch
 from torch import nn
 
 from mmit.base import mismatch as mm
+from mmit.base import modules as md
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
 from ..utils import size_control
-from .parts import ConvNormActivation, SkipBlock
+from .parts import SkipBlock
 
 __all__ = ["FPN"]
 
@@ -67,7 +68,7 @@ class FPN(BaseDecoder):
         out_blocks = []
         for red in input_reductions[1:][::-1]:
             up_lay = partial(upsample_layer, scale=red)
-            block = ConvNormActivation(decoder_channel, decoder_channel, up_lay, *specs)
+            block = md.ConvNormAct(decoder_channel, decoder_channel, 3, *specs, up_lay)
             out_blocks.append(block)
 
         self.out_blocks = nn.ModuleList(out_blocks)

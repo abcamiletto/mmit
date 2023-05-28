@@ -3,12 +3,13 @@ from typing import List, Optional, Type
 
 import torch.nn as nn
 
+from mmit.base import modules as md
 from mmit.base import upsamplers as up
 from mmit.factory import register
 
 from ..basedecoder import BaseDecoder
 from ..utils import size_control
-from .parts import ConvNormActivation, PSPModule
+from .parts import PSPModule
 
 __all__ = ["PSPNet"]
 
@@ -52,6 +53,7 @@ class PSPNet(BaseDecoder):
 
         self.input_index = feature_index or self._get_index(input_reductions)
         final_up = self._format_upsample_layers(input_reductions, upsample_layer)
+        self._out_classes = decoder_channel
 
         specs = norm_layer, activation_layer, extra_layer
 
@@ -59,13 +61,7 @@ class PSPNet(BaseDecoder):
 
         self.psp = PSPModule(in_ch, sizes, *specs)
 
-        self.conv = ConvNormActivation(
-            in_channels=self.psp.out_channels,
-            out_channels=decoder_channel,
-            kernel_size=1,
-        )
-
-        self._out_classes = decoder_channel
+        self.conv = md.ConvNormAct(self.psp.out_channels, decoder_channel, 1, *specs)
 
         self.dropout = nn.Dropout2d(p=dropout)
         self.up = final_up(decoder_channel)

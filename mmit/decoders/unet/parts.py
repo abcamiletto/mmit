@@ -4,6 +4,7 @@ import torch
 from torch import nn
 
 from mmit.base import mismatch as mm
+from mmit.base import modules as md
 from mmit.base import upsamplers as up
 
 
@@ -50,20 +51,12 @@ class DoubleConvBlock(nn.Module):
         activation: Type[nn.Module] = nn.ReLU,
     ):
         super().__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
-        self.norm1 = norm_layer(out_channels)
-        self.activation1 = activation()
 
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
-        self.norm2 = norm_layer(out_channels)
-        self.activation2 = activation()
+        specs = norm_layer, activation
+        self.conv1 = md.ConvNormAct(in_channels, out_channels, 3, *specs)
+        self.conv2 = md.ConvNormAct(out_channels, out_channels, 3, *specs)
 
     def forward(self, x):
         x = self.conv1(x)
-        x = self.norm1(x)
-        x = self.activation1(x)
-
         x = self.conv2(x)
-        x = self.norm2(x)
-        x = self.activation2(x)
         return x
