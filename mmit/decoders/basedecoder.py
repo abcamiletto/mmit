@@ -22,7 +22,7 @@ class BaseDecoder(nn.Module):
         """Forward pass of the decoder.
 
         Args:
-            *features (Tensor): Features from the encoder, the first is the one with the highest resolution.
+            *features (Tensor): Features from the encoder, the first is the input image, last one the deepest.
         """
         raise NotImplementedError
 
