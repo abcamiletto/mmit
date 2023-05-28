@@ -5,8 +5,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
 
-from mmit.base import upsamplers as up
-
 
 class PSPModule(nn.Module):
     """
@@ -51,7 +49,6 @@ class PoolBlock(nn.Module):
         in_channels: int,
         out_channels: int,
         pool_size: int,
-        upsample_layer: Type[nn.Module] = up.Upsample,
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
