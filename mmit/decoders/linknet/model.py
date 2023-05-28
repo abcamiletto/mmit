@@ -26,7 +26,6 @@ class LinkNet(BaseDecoder):
         input_reductions: The reduction factor of the input features.
         decoder_channel: The channel for the output of the decoder.
 
-
     """
 
     def __init__(
