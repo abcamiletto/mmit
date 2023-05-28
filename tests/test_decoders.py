@@ -23,7 +23,7 @@ def test_timm_encoder_decoder(encoder_name, decoder_name):
 
 @pytest.mark.parametrize("encoder_name", TEST_ENCODERS)
 @pytest.mark.parametrize("decoder_name", DECODERS)
-@pytest.mark.parametrize("input_shape", [(151, 210), (87, 141)])
+@pytest.mark.parametrize("input_shape", [(277, 289), (271, 333)])
 def test_timm_encoder_decoder_awful_shape(encoder_name, decoder_name, input_shape):
     """Test that the timm encoder and decoder work together."""
     encoder = mmit.create_encoder(encoder_name, pretrained=False)
