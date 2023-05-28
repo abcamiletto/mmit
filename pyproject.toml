@@ -12,7 +12,7 @@ dependencies = [
     "torch>=1.10"
 ]
 requires-python = ">=3.8"
-version = "0.4.1"
+version = "0.5.0"
 
 [project.urls]
 Homepage = "https://github.com/abcamiletto/mmit"
