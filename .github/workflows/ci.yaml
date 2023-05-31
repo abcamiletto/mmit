@@ -1,0 +1,54 @@
+# This workflow will install Python dependencies, run tests, and lint with a variety of Python versions
+# For more information, see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    env:
+      TERM: xterm-256color
+      FORCE_COLOR: 1
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+          # Install dependencies, including the CPU version of pytorch
+          pip install torch==1.13.0+cpu
+          pip install .[dev, docs]
+
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+          pre-commit install
+          pre-commit run --all-files
+
+      - name: Build docs
+        run: |
+          cd docs
+          make html
+          cd ..
+
+      - name: Run tests with pytest
+        run: |
+          pytest -v --cov-report xml --durations=0 --color=yes
