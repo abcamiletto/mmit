@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import torch.nn as nn
 from torch import Tensor
@@ -14,7 +14,7 @@ class BaseEncoder(nn.Module):
     ):
         super().__init__()
 
-    def forward(self, x: Tensor) -> list[Tensor]:
+    def forward(self, x: Tensor) -> List[Tensor]:
         """Forward pass of the encoder
 
         Args:
