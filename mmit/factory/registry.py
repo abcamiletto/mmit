@@ -2,7 +2,6 @@ import inspect
 from functools import partial
 from typing import Dict, List, Type
 
-import timm
 import torch.nn as nn
 
 __all__ = [
@@ -52,22 +51,18 @@ class Registry:
         return list(cls._heads.keys())
 
     @classmethod
-    def get_decoder(cls, name: str) -> Type[nn.Module]:
+    def get_decoder_class(cls, name: str) -> Type[nn.Module]:
         if name not in cls._decoders:
             raise KeyError(f"Decoder {name} is not registered")
         return cls._decoders[name]
 
     @classmethod
-    def get_encoder(cls, name: str) -> Type[nn.Module]:
-        # If the name is a timm model, return a partially initialized timm encoder
-        if name in timm.list_models():
-            encoder = cls._encoders["timmencoder"]
-            return partial(encoder, name=name)
+    def get_encoder_class(cls, name: str) -> Type[nn.Module]:
+        if name in cls._encoders:
+            return cls._encoders[name]
 
-        if name not in cls._encoders:
-            raise KeyError(f"Encoder {name} is not registered")
-
-        return cls._encoders[name]
+        encoder = cls._encoders["timmencoder"]
+        return partial(encoder, name=name)
 
     @classmethod
     def get_head(cls, name: str) -> Type[nn.Module]:
@@ -82,10 +77,10 @@ class Registry:
 
 register_decoder = Registry.register_decoder
 list_decoders = Registry.list_all_decoders
-get_decoder = Registry.get_decoder
+get_decoder_class = Registry.get_decoder_class
 register_encoder = Registry.register_encoder
 list_encoders = Registry.list_all_encoders
-get_encoder = Registry.get_encoder
+get_encoder_class = Registry.get_encoder_class
 register_head = Registry.register_head
 list_heads = Registry.list_all_heads
 get_head = Registry.get_head
