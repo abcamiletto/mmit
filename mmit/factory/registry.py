@@ -52,7 +52,7 @@ class Registry:
         return list(cls._heads.keys())
 
     @classmethod
-    def get_decoder(cls, name: str) -> Type[nn.Module]:
+    def get_decoder_class(cls, name: str) -> Type[nn.Module]:
         if name not in cls._decoders:
             raise KeyError(f"Decoder {name} is not registered")
         return cls._decoders[name]
@@ -82,7 +82,7 @@ class Registry:
 
 register_decoder = Registry.register_decoder
 list_decoders = Registry.list_all_decoders
-get_decoder = Registry.get_decoder
+get_decoder_class = Registry.get_decoder_class
 register_encoder = Registry.register_encoder
 list_encoders = Registry.list_all_encoders
 get_encoder_class = Registry.get_encoder_class

@@ -4,7 +4,7 @@ import torch.nn as nn
 
 from ..models import MmitModel
 from .components import build_components
-from .registry import get_decoder, get_encoder_class, get_head
+from .registry import get_decoder_class, get_encoder_class, get_head
 
 __all__ = ["create_encoder", "create_decoder", "create_model"]
 
@@ -63,7 +63,7 @@ class Factory:
             out_reductions: The reduction factor of the input tensors of the forward pass.
             kwargs: Keyword arguments for the decoder. Take a look at the specific decoder docs for more info!
         """
-        Decoder = get_decoder(name)
+        Decoder = get_decoder_class(name)
         components = build_components(kwargs)
 
         kwargs.update(components)
