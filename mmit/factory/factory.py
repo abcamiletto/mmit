@@ -41,9 +41,7 @@ class Factory:
         if out_indices is not None:
             kwargs["out_indices"] = out_indices
 
-        encoder = Encoder(
-            **kwargs,
-        )
+        encoder = Encoder(**kwargs)
         cls.encoder_channels = encoder.out_channels
         cls.encoder_reductions = encoder.out_reductions
         return encoder
