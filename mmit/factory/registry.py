@@ -58,7 +58,7 @@ class Registry:
         return cls._decoders[name]
 
     @classmethod
-    def get_encoder(cls, name: str) -> Type[nn.Module]:
+    def get_encoder_class(cls, name: str) -> Type[nn.Module]:
         # If the name is a timm model, return a partially initialized timm encoder
         if name in timm.list_models():
             encoder = cls._encoders["timmencoder"]
@@ -85,7 +85,7 @@ list_decoders = Registry.list_all_decoders
 get_decoder = Registry.get_decoder
 register_encoder = Registry.register_encoder
 list_encoders = Registry.list_all_encoders
-get_encoder = Registry.get_encoder
+get_encoder_class = Registry.get_encoder_class
 register_head = Registry.register_head
 list_heads = Registry.list_all_heads
 get_head = Registry.get_head

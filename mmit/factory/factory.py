@@ -4,7 +4,7 @@ import torch.nn as nn
 
 from ..models import MmitModel
 from .components import build_components
-from .registry import get_decoder, get_encoder, get_head
+from .registry import get_decoder, get_encoder_class, get_head
 
 __all__ = ["create_encoder", "create_decoder", "create_model"]
 
@@ -33,7 +33,7 @@ class Factory:
             output_stride: The output stride of the encoder.
             kwargs: Keyword arguments for the encoder. Take a look at the specific encoder docs for more info!
         """
-        Encoder = get_encoder(name)
+        Encoder = get_encoder_class(name)
 
         kwargs["in_chans"] = in_chans
         if output_stride is not None:
