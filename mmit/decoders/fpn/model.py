@@ -33,6 +33,7 @@ class FPN(BaseDecoder):
         extra_layer: Addional layer to use.
         mismatch_layer: Strategy to deal with odd resolutions.
 
+
     """
 
     def __init__(
@@ -45,6 +46,7 @@ class FPN(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        merge_mode: str = "sum",
     ):
         super().__init__(input_channels, input_reductions)
 
@@ -72,13 +74,21 @@ class FPN(BaseDecoder):
             out_blocks.append(block)
 
         self.out_blocks = nn.ModuleList(out_blocks)
-        self._out_classes = decoder_channel * len(out_blocks)
 
         # Input block for the first layer
         self.input_block = nn.Conv2d(input_channels[0], decoder_channel, 1)
 
         # Mismatch layer in case for weird sizes
         self.mismatch_layer = mismatch_layer()
+
+        # Merge mode
+        self.merge_mode = merge_mode
+        if merge_mode not in ["sum", "cat"]:
+            raise ValueError(f"Merge mode {merge_mode} not 'sum' or 'cat'.")
+
+        # Output classes
+        factor = len(out_blocks) if merge_mode == "cat" else 1
+        self._out_classes = decoder_channel * factor
 
     @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
@@ -102,15 +112,15 @@ class FPN(BaseDecoder):
             out_maps.append(x)
 
         # We process the pyramid of features
-        outputs = []
+        pyram = []
         for out_block, out_map in zip(self.out_blocks, out_maps):
             x = out_block(out_map)
-            outputs.append(x.clone())
+            pyram.append(x.clone())
 
         # We fix the output sizes in case of weird shapes
-        outputs = self._fix_output_sizes(outputs)
+        pyram = self._fix_output_sizes(pyram)
 
-        result = torch.cat(outputs, dim=1)
+        result = self._merge_pyramid(pyram)
         return result
 
     @property
@@ -141,3 +151,6 @@ class FPN(BaseDecoder):
             new_outputs.append(resized)
 
         return new_outputs
+
+    def _merge_pyramid(self, pyram):
+        return torch.cat(pyram, dim=1) if self.merge_mode == "cat" else sum(pyram)
