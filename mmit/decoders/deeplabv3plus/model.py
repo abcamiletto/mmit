@@ -35,6 +35,7 @@ class DeepLabV3Plus(BaseDecoder):
         norm_layer: Normalization layer to use.
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -49,8 +50,9 @@ class DeepLabV3Plus(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
         self.skip_idxes = self._get_skip_indexes(input_reductions)
         skip_reds = self._get_skip_reductions(input_reductions)
         skip_chans = self._get_skip_channels(input_channels)
@@ -89,6 +91,10 @@ class DeepLabV3Plus(BaseDecoder):
         skip = features[self.skip_idxes[0]]
         skip = self.skip_block(skip)
         x, skip = self.fix_mismatch(x, skip)
+
+        if self.return_features:
+            return [skip, x]
+
         x = torch.cat([x, skip], dim=1)
 
         x = self.final_block(x)

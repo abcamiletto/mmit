@@ -11,12 +11,14 @@ class BaseDecoder(nn.Module):
         self,
         input_channels: List[int],
         input_reductions: List[int],
+        return_features: bool = False,
     ):
         super().__init__()
         self._validate_input(input_channels, input_reductions)
 
         self.input_channels = input_channels
         self.input_reductions = input_reductions
+        self.return_features = return_features
 
     def forward(self, *features: Tensor) -> Union[Tensor, List[Tensor]]:
         """Forward pass of the decoder.

@@ -31,6 +31,7 @@ class PAN(BaseDecoder):
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
         mismatch_layer: Strategy to deal with odd resolutions.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -44,8 +45,9 @@ class PAN(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
 
         in_ch, out_ch = self._format_channels(input_channels, decoder_channel)
         up_lay = self._format_upsample_layer(input_reductions, upsample_layer)
@@ -74,12 +76,17 @@ class PAN(BaseDecoder):
 
         x = self.fpa(bottleneck)
 
+        inters = [x]
+
         for feature, gau in zip(features[::-1], self.gaus):
             x = gau(feature, x)
 
+            if self.return_features:
+                inters.append(x)
+
         x = self.up(x)
 
-        return x
+        return x if not self.return_features else inters
 
     @property
     def out_classes(self) -> int:

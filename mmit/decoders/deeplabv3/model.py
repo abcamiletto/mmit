@@ -33,6 +33,7 @@ class DeepLabV3(BaseDecoder):
         norm_layer: Normalization layer to use.
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -47,8 +48,9 @@ class DeepLabV3(BaseDecoder):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
         self.input_index = feature_index or self._get_index(input_reductions)
         self._out_classes = decoder_channel
 
@@ -62,11 +64,15 @@ class DeepLabV3(BaseDecoder):
 
     @size_control
     def forward(self, *features: torch.Tensor) -> torch.Tensor:
-        feature = features[self.input_index]
-        feature = self.aspp(feature)
-        feature = self.conv(feature)
-        feature = self.up(feature)
-        return feature
+        x0 = features[self.input_index]
+        x1 = self.aspp(x0)
+        x2 = self.conv(x1)
+        x3 = self.up(x2)
+
+        if self.return_features:
+            return [x1, x2, x3]
+
+        return x3
 
     def _get_index(self, input_reductions: List[int]) -> int:
         closest_index = None

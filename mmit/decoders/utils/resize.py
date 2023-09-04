@@ -14,6 +14,10 @@ def size_control(func):
 
         output = func(self, *features, **kwargs)
 
+        # If the user wants the features, return them
+        if self.return_features:
+            return output
+
         # Raise a warnin if size is very different
         out_size = output.shape[-2:]
         check_if_resizing_is_too_big(img_size, out_size)

@@ -31,6 +31,7 @@ class UNet(BaseDecoder):
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
         mismatch_layer: Strategy to deal with odd resolutions.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -44,8 +45,9 @@ class UNet(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
 
         if decoder_channels is None:
             decoder_channels = DEFAULT_CHANNELS[: len(input_channels) - 1]
@@ -60,7 +62,7 @@ class UNet(BaseDecoder):
             ublock = UBlock(ic, sc, oc, up_lay, *specs)
             blocks.append(ublock)
 
-        self.blocks = nn.ModuleList(blocks)
+        self.stages = nn.ModuleList(blocks)
         self._output_classes = out_ch[-1]
 
     @size_control
@@ -74,11 +76,15 @@ class UNet(BaseDecoder):
         skips = features[1:]
         x = features[0]
 
-        for i, decoder_block in enumerate(self.blocks):
+        inters = []
+        for i, decoder_block in enumerate(self.stages):
             skip = skips[i] if i < len(skips) else None
             x = decoder_block(x, skip)
 
-        return x
+            if self.return_features:
+                inters.append(x)
+
+        return inters if self.return_features else x
 
     @property
     def out_classes(self) -> int:
