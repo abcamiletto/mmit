@@ -54,3 +54,18 @@ def test_timm_encoder_layers_stride_decoder(encoder_name, decoder_name):
 
     assert out.shape[-2:] == x.shape[-2:]
     assert out.shape[1] == decoder.out_classes
+
+
+@pytest.mark.parametrize("encoder_name", TEST_ENCODERS)
+@pytest.mark.parametrize("decoder_name", DECODERS)
+def test_return_features(encoder_name, decoder_name):
+    """Test that the timm encoder and decoder work together."""
+    encoder = mmit.create_encoder(encoder_name, pretrained=False)
+    decoder = mmit.create_decoder(decoder_name, return_features=True)
+
+    x = torch.randn(2, 3, 256, 256)
+    with torch.no_grad():
+        features = encoder(x)
+        features = decoder(*features)
+
+    assert type(features) == tuple
