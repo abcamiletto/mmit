@@ -33,6 +33,7 @@ class PSPNet(BaseDecoder):
         norm_layer: Normalization layer to use.
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -48,8 +49,9 @@ class PSPNet(BaseDecoder):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
 
         self.input_index = feature_index or self._get_index(input_reductions)
         final_up = self._format_upsample_layers(input_reductions, upsample_layer)
@@ -59,7 +61,7 @@ class PSPNet(BaseDecoder):
 
         in_ch = input_channels[self.input_index]
 
-        self.psp = PSPModule(in_ch, sizes, *specs)
+        self.psp = PSPModule(in_ch, sizes, *specs, return_features=return_features)
 
         self.conv = md.ConvNormAct(self.psp.out_channels, decoder_channel, 1, *specs)
 
@@ -71,6 +73,10 @@ class PSPNet(BaseDecoder):
         x = features[self.input_index]
 
         x = self.psp(x)
+
+        if self.return_features:
+            return x
+
         x = self.conv(x)
         x = self.dropout(x)
         x = self.up(x)

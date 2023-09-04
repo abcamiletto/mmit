@@ -25,6 +25,12 @@ class LinkNet(BaseDecoder):
         input_channels: The channels of the input features.
         input_reductions: The reduction factor of the input features.
         decoder_channel: The channel for the output of the decoder.
+        upsample_layer: Layer to use for the upsampling.
+        norm_layer: Normalization layer to use.
+        activation_layer: Activation function to use.
+        extra_layer: Addional layer to use.
+        mismatch_layer: Strategy to deal with odd resolutions.
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -38,8 +44,9 @@ class LinkNet(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
         self._out_classes = decoder_channel
         in_ch, out_ch = self._format_channels(input_channels, decoder_channel)
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
@@ -50,7 +57,7 @@ class LinkNet(BaseDecoder):
             block = LinkBlock(ic, oc, up_lay, *specs)
             blocks.append(block)
 
-        self.blocks = nn.ModuleList(blocks)
+        self.stages = nn.ModuleList(blocks)
 
     @size_control
     def forward(self, *features):
@@ -60,11 +67,16 @@ class LinkNet(BaseDecoder):
         x = features[0]
         skips = features[1:]
 
-        for i, decoder_block in enumerate(self.blocks):
+        inters = []
+
+        for i, decoder_block in enumerate(self.stages):
             skip = skips[i] if i < len(skips) else None
             x = decoder_block(x, skip)
 
-        return x
+            if self.return_features:
+                inters.append(x)
+
+        return x if not self.return_features else inters
 
     @property
     def out_classes(self) -> int:

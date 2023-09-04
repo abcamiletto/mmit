@@ -19,6 +19,7 @@ class PSPModule(nn.Module):
         norm_layer: Type[nn.Module] = nn.BatchNorm2d,
         activation: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
+        return_features: bool = False,
     ) -> None:
         super().__init__()
 
@@ -31,11 +32,16 @@ class PSPModule(nn.Module):
             blocks.append(PoolBlock(in_channels, out_ch, size, *specs))
             out_channels += out_ch
 
-        self.blocks = nn.ModuleList(blocks)
+        self.stages = nn.ModuleList(blocks)
         self._out_channels = out_channels
+        self.return_features = return_features
 
     def forward(self, x):
-        xs = [block(x) for block in self.blocks] + [x]
+        xs = [block(x) for block in self.stages] + [x]
+
+        if self.return_features:
+            return xs
+
         x = torch.cat(xs, dim=1)
         return x
 

@@ -39,6 +39,7 @@ class UNetPlusPlus(BaseDecoder):
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
         mismatch_layer: Strategy to deal with odd resolutions.
+        return_features: Whether to return the intermediate results of the decoder.
     """
 
     def __init__(
@@ -51,8 +52,9 @@ class UNetPlusPlus(BaseDecoder):
         activation_layer: Type[nn.Module] = nn.ReLU,
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
 
         self.depth = len(input_channels)
         if decoder_channels is None:
@@ -70,6 +72,7 @@ class UNetPlusPlus(BaseDecoder):
 
         self.blocks = nn.ModuleDict(blocks)
         self._out_classes = out_ch
+        self.return_features = return_features
 
     @size_control
     def forward(self, *features):
@@ -91,6 +94,10 @@ class UNetPlusPlus(BaseDecoder):
 
         # The final output is the output of the last block
         final_output = features[f"0_{self.depth-1}"]
+
+        if self.return_features:
+            inters = [features[f"0_{lidx}"] for lidx in range(1, self.depth)]
+            return inters
 
         return final_output
 

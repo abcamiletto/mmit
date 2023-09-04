@@ -32,7 +32,7 @@ class FPN(BaseDecoder):
         activation_layer: Activation function to use.
         extra_layer: Addional layer to use.
         mismatch_layer: Strategy to deal with odd resolutions.
-
+        return_features: Whether to return the intermediate results of the decoder.
 
     """
 
@@ -47,8 +47,9 @@ class FPN(BaseDecoder):
         extra_layer: Type[nn.Module] = nn.Identity,
         mismatch_layer: Type[nn.Module] = mm.Pad,
         merge_mode: str = "sum",
+        return_features: bool = False,
     ):
-        super().__init__(input_channels, input_reductions)
+        super().__init__(input_channels, input_reductions, return_features)
 
         up_lays = self._format_upsample_layers(input_reductions, upsample_layer)
 
@@ -119,6 +120,9 @@ class FPN(BaseDecoder):
 
         # We fix the output sizes in case of weird shapes
         pyram = self._fix_output_sizes(pyram)
+
+        if self.return_features:
+            return pyram
 
         result = self._merge_pyramid(pyram)
         return result

@@ -68,4 +68,4 @@ def test_return_features(encoder_name, decoder_name):
         features = encoder(x)
         features = decoder(*features)
 
-    assert type(features) == tuple
+    assert type(features) == list
