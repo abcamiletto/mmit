@@ -1,16 +1,15 @@
 [build-system]
-requires      = ["setuptools>=65.0.0", "wheel>=0.34.0", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=65.0.0", "wheel>=0.34.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmit"
 description = "A Python package for computer vision experiments and research."
 readme = "README.md"
-authors = [{ name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" }]
-dependencies = [
-    "timm>=0.9.0",
-    "torch>=1.10"
+authors = [
+    { name = "Andrea Boscolo Camiletto", email = "abcamiletto@gmail.com" },
 ]
+dependencies = ["timm>=0.9.0", "torch>=1.10"]
 requires-python = ">=3.8"
 version = "0.5.2"
 
@@ -19,17 +18,28 @@ Homepage = "https://github.com/abcamiletto/mmit"
 Repository = "https://github.com/abcamiletto/mmit"
 
 [project.optional-dependencies]
-dev = ["black", "bumpver", "pytest", "pytest-cov", "pytest-lazy-fixture", "pre-commit"]
-docs = ["sphinx==6.2.1",
-        "sphinx-rtd-theme==1.2.0",
-        "sphinx-copybutton==0.5.2",
-        "sphinx-autodoc-typehints==1.23.0",
-        "myst-parser==1.0.0",
-        "sphinx-autobuild",
+dev = [
+    "black",
+    "bumpver",
+    "pytest",
+    "pytest-cov",
+    "pytest-lazy-fixture",
+    "pre-commit",
+]
+docs = [
+    "sphinx==6.2.1",
+    "sphinx-rtd-theme==1.2.0",
+    "sphinx-copybutton==0.5.2",
+    "sphinx-autodoc-typehints==1.23.0",
+    "myst-parser==1.0.0",
+    "sphinx-autobuild",
 ]
 
 [tool.setuptools.packages.find]
-namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.black]
+line-length = 99
 
 [tool.ruff]
 line-length = 120

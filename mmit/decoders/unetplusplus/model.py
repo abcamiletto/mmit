@@ -124,9 +124,7 @@ class UNetPlusPlus(BaseDecoder):
                 skip_channels[current] = skip_channels[left] + out_channels[left]
                 out_channels[current] = out_channels[left]
 
-        return {
-            k: (in_channels[k], skip_channels[k], out_channels[k]) for k in in_channels
-        }
+        return {k: (in_channels[k], skip_channels[k], out_channels[k]) for k in in_channels}
 
     def _format_upsample_layers(self, input_reductions, upsample_layer):
         # We build a mask to filter out the layers that don't need upsampling

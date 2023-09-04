@@ -41,9 +41,7 @@ class BaseDecoder(nn.Module):
 
     def _validate_input(self, channels: List[int], reductions: List[int]):
         if len(channels) != len(reductions):
-            raise ValueError(
-                "The number of input channels and input reductions must match."
-            )
+            raise ValueError("The number of input channels and input reductions must match.")
         if len(channels) == 0:
             raise ValueError("The number of input channels must be greater than 0.")
 

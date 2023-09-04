@@ -4,9 +4,7 @@ from mmit.decoders.basedecoder import BaseDecoder
 
 
 class ClassicDecoder(BaseDecoder):
-    def __init__(
-        self, input_channels=None, input_reductions=None, out_classes=1, **kwargs
-    ):
+    def __init__(self, input_channels=None, input_reductions=None, out_classes=1, **kwargs):
         super().__init__(input_channels, input_reductions)
         self.input_channels = input_channels
         self.input_reductions = input_reductions
