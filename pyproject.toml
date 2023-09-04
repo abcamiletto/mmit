@@ -11,7 +11,7 @@ authors = [
 ]
 dependencies = ["timm>=0.9.0", "torch>=1.10"]
 requires-python = ">=3.8"
-version = "0.6.2"
+version = "0.6.0"
 
 [project.urls]
 Homepage = "https://github.com/abcamiletto/mmit"
